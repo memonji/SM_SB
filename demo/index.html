@@ -1,0 +1,295 @@
+<!--
+Author:
+Emma Angela Montecchiari - Master's student at Università di Trento-SISSA
+
+Description:
+This script contains the code to show to Unione Italiana Ciechi as a demo version.
+
+I am working on a MacOS High Sierra Version 10.13.6, 2,2 GHz Intel Core i7.
+
+For the audio recordings:
+I used https://elevenlabs.io/ for the instructions;
+I used https://speechgen.io/en/tts-italian/ for the stimuli
+
+I've put the all files in the main directory cause the demo is running on cognition.run
+-->
+<!--jsPsychCallFunction-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Auditorial stimuli presentation</title>
+  <!-- jsPsych -->
+  <script src="https://unpkg.com/jspsych@7.3.4" type="text/javascript"></script>
+  <!-- preload & setup -->
+  <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.2.1"></script>
+  <!-- response plugins -->
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-audio-keyboard-response@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.4"></script>
+  <!-- survey plugins -->
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@1.0.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.3"></script>
+  <!-- formatting & styling -->
+  <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="utf-8"/>
+</head>
+<body></body>
+<script>
+
+/* ==================== INITIALIZATION ==================== */
+
+  var jsPsych = initJsPsych({
+    use_webaudio: false,
+    message_progress_bar: 'Barra di completamento',
+    show_progress_bar: true,
+    audio_to_preload: [
+      'citta.mp3', 'piazza.mp3', 'colore.mp3', 'pennello.mp3', 'albero.mp3', 'vita.mp3',
+      'quadro.mp3',  'persona.mp3', 'teatro.mp3', 'poltrona.mp3', 'pineta.mp3', 'castello.mp3',
+      'treno.mp3', 'macchina.mp3', 'verde.mp3', 'speranza.mp3', 'nipote.mp3', 'temporale.mp3',
+      'foglia.mp3', 'maestro.mp3', 'scuola.mp3', 'arte.mp3', 'tetto.mp3', 'aquila.mp3',
+      'bagno.mp3', 'occhiali.mp3', 'cravatta.mp3', 'guanto.mp3', 'campagna.mp3', 'agricoltura.mp3',
+      'ombra.mp3', 'tasca.mp3', 'pecora.mp3', 'maglione.mp3', 'valigia.mp3', 'grano.mp3',
+      'elettrico.mp3', 'computer.mp3', 'irrigazione.mp3', 'vasca.mp3', 'fienile.mp3', 'sedile.mp3',
+      'corda.mp3', 'contadina.mp3', 'cane.mp3', 'lupo.mp3', 'mare.mp3', 'aereo.mp3',
+      'solare.mp3', 'magma.mp3', 'rosa.mp3', 'confetto.mp3', 'barriera.mp3', 'cancello.mp3',
+      'ingresso.mp3', 'rosso.mp3', 'infante.mp3', 'mimosa.mp3', 'fabbrica.mp3',  'gilet.mp3',
+       'separation_sound_F.mp3', 'silence_audio.mp3',
+       'demo_example_to_repeat.mp3', 'demo_instructions_examples_1.mp3', 'demo_instructions_to_repeat.mp3',
+        'demo_ending_message.mp3', 'demo_beginning_message.mp3', 'demo_understanding_check.mp3',
+      'demo_instructions_examples_2.mp3', 'demo_instructions_examples_3.mp3'
+    ]
+  });
+
+  var timeline = [];
+  
+  // var runId = experimentData.run_id;
+  // console.log(runId)
+
+  var official_stimuli = [
+    { audio1: 'citta.mp3', audio2: 'piazza.mp3' },
+    { audio1: 'colore.mp3', audio2: 'pennello.mp3' },
+    { audio1: 'albero.mp3', audio2: 'vita.mp3' },
+
+    { audio1: 'quadro.mp3', audio2: 'persona.mp3' },
+    { audio1: 'teatro.mp3', audio2: 'poltrona.mp3' },
+    { audio1: 'pineta.mp3', audio2: 'castello.mp3' },
+
+    { audio1: 'treno.mp3', audio2: 'macchina.mp3' },
+    { audio1: 'verde.mp3', audio2: 'speranza.mp3' },
+    { audio1: 'nipote.mp3', audio2: 'temporale.mp3' },
+
+    { audio1: 'foglia.mp3', audio2: 'maestro.mp3' },
+    { audio1: 'scuola.mp3', audio2: 'arte.mp3' },
+    { audio1: 'tetto.mp3', audio2: 'aquila.mp3' },
+
+    { audio1: 'bagno.mp3', audio2: 'occhiali.mp3' },
+    { audio1: 'cravatta.mp3', audio2: 'guanto.mp3' },
+    { audio1: 'campagna.mp3', audio2: 'agricoltura.mp3' },
+
+
+    { audio1: 'ombra.mp3', audio2: 'tasca.mp3' },
+    { audio1: 'pecora.mp3', audio2: 'maglione.mp3' },
+    { audio1: 'valigia.mp3', audio2: 'grano.mp3' },
+
+    { audio1: 'elettrico.mp3', audio2: 'computer.mp3' },
+    { audio1: 'irrigazione.mp3', audio2: 'vasca.mp3' },
+    { audio1: 'fienile.mp3', audio2: 'sedile.mp3' },
+
+    { audio1: 'corda.mp3', audio2: 'contadina.mp3' },
+    { audio1: 'cane.mp3', audio2: 'lupo.mp3' },
+    { audio1: 'mare.mp3', audio2: 'aereo.mp3' },
+
+    { audio1: 'solare.mp3', audio2: 'magma.mp3' },
+    { audio1: 'rosa.mp3', audio2: 'confetto.mp3' },
+    { audio1: 'barriera.mp3', audio2: 'cancello.mp3' },
+
+    { audio1: 'ingresso.mp3', audio2: 'rosso.mp3' },
+    { audio1: 'infante.mp3', audio2: 'mimosa.mp3' },
+    { audio1: 'fabbrica.mp3', audio2: 'gilet.mp3' },
+
+  ];
+
+  /* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
+
+  /* Participant ID textbox */
+  var sbjIDPrompt = {
+    type: jsPsychSurveyHtmlForm,
+    preamble: '<p>Scriva il numero ID a cui è stato associato:</p>',
+    html: '<input name="ID" type="text" required/></p><p></p>',
+    button_label: "Continue",
+  };
+  
+  /* Fullscreen and starting button */
+  var start_button = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: true,
+    message: `<p>Benvenuti all'esperimento! Clicchi il bottone qua sotto per iniziare.</p>`,
+    button_label: 'Inizia'
+  };
+  
+  /* Instructions and examples */
+  var instructions_examples = { 
+    timeline: [
+      {
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: "demo_instructions_example_1.mp3",
+        choices: 'NO_KEYS',
+        trial_ends_after_audio: true,
+        post_trial_gap: 500
+      },
+      {
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: "demo_instructions_examples_2.mp3",
+        choices: 'NO_KEYS',
+        trial_ends_after_audio: true,
+        post_trial_gap: 300
+      },
+      {
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: "demo_instructions_examples_3.mp3",
+        choices: 'NO_KEYS',
+        trial_ends_after_audio: true,
+        post_trial_gap: 5000
+      },
+    ]
+
+  };
+
+  /* Understanding check: giving options to get back to instructions/examples */
+  var example_to_repeat = {
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: "demo_example_to_repeat.mp3",
+        choices: 'NO_KEYS',
+        trial_ends_after_audio: true,
+        post_trial_gap: 1000
+  };
+  
+  var instructions_to_repeat = {
+    type: jsPsychAudioKeyboardResponse,
+    stimulus: "demo_instructions_to_repeat.mp3",
+    choices: 'NO_KEYS',
+    trial_ends_after_audio: true,
+    post_trial_gap: 1000
+  };
+  
+  var final = {
+    type: jsPsychAudioKeyboardResponse,
+    stimulus: "demo_beginning_message.mp3",
+    choices: 'NO_KEYS',
+    trial_ends_after_audio: true,
+    post_trial_gap: 3000
+  };
+  
+  function understanding_question() {
+    var if_node_instructions = {
+      timeline: [instructions_to_repeat],
+      conditional_function: function() {
+        var data = jsPsych.data.get().last(1).values()[0];
+        return !!jsPsych.pluginAPI.compareKeys(data.response, 'i');
+      }
+    }
+    var if_node_example = {
+      timeline: [example_to_repeat],
+      conditional_function: function () {
+        var data = jsPsych.data.get().last(1).values()[0];
+        return !!jsPsych.pluginAPI.compareKeys(data.response, 'e');
+      }
+    }
+    var understanding_question = {
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "demo_understanding_check.mp3",
+      choices: ['i', 'e', 'c'],
+      response_ends_trial: true,
+    }
+    timeline.push(understanding_question, if_node_instructions, if_node_example, final);
+  };
+
+  /* ==================== CLOSING THE EXP ==================== */
+
+  var ending_message = {
+    timeline: [
+      {
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: "demo_ending_message.mp3",
+        choices: 'NO_KEYS',
+        trial_ends_after_audio: true,
+        post_trial_gap: 1000
+      },
+      {
+        type: jsPsychFullscreen,
+        fullscreen_mode: false,
+        delay_after: 0
+      }
+    ]
+  };
+
+  /* ==================== STIMULI MANAGEMENT ==================== */
+
+  function presentStimuli(stimuli) {
+    for (var i = 0; i < stimuli.length; i += 3) {
+      var pairsChunk = stimuli.slice(i, i + 3);
+      pairsChunk.forEach(stimulus => {
+        timeline.push({
+          timeline: [
+            {
+              type: jsPsychAudioKeyboardResponse,
+              stimulus: stimulus.audio1,
+              choices: 'NO_KEYS',
+              trial_duration: 900
+            },
+            {
+              type: jsPsychAudioKeyboardResponse,
+              stimulus: stimulus.audio2,
+              choices: 'NO_KEYS',
+              trial_duration: 900,
+              post_trial_gap: 1000
+            }
+          ],
+        });
+      });
+      var response = {
+        timeline: [
+          {
+            type: jsPsychAudioKeyboardResponse,
+            stimulus: 'separation_sound_F.mp3',
+            choices: "1, 2, 3",
+            response_ends_trial: true,
+          },
+          {
+            type: jsPsychAudioKeyboardResponse,
+            stimulus: 'silence_audio.mp3',
+            choices: "1, 2, 3",
+            response_ends_trial: true,
+            post_trial_gap: 1000 
+          },
+        ]
+      };
+      timeline.push(response);
+    }
+  };
+
+  /* ==================== TIMELINE ==================== */
+
+  // timeline.push(sbjIDPrompt);
+  timeline.push(start_button);
+  
+  timeline.push(instructions_examples);
+  understanding_question();
+  
+  presentStimuli(official_stimuli);
+
+  timeline.push(ending_message);
+
+  console.log('Timeline', timeline);
+
+  /* ==================== RUNNING ==================== */
+
+  jsPsych.run(timeline);
+  
+</script>
+</html>
