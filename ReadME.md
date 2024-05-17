@@ -61,6 +61,7 @@ and those are inside the *'./audio_data/instructions/common/'* folder.
   - **'./stimuli_dataframe/'**: Contains the .csv files where the stimuli and their distribution over trials are stored. This is the input file that the index scripts will read and associate with the audio file stimuli.
 
 **Note**
+
 All files are organized into different folders for clarity and tidiness. In the actual experiment code, due to Cognition.run settings, the files have been uploaded into a single common directory at the source code level. Therefore, in **'./index_blind.html'** and **'./index_sighted.html'**, the directory paths only include file names without considering different directories.
 
 ### Requirements
