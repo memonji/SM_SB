@@ -29,36 +29,39 @@ The study has been approved by SISSA Ethics Committee.
 
 This repository contains the material used for collecting behavioural judgements over the semantic maps.
 
-The dynamical scrips which are the source codes for the experiment are *./index_blind.html* and *./index_sighted.html*.
-Those two versions have been implemented since trials distributions and instructions are slightly different between the two.
-The experiment has been run and stored on cognition.run (https://www.cognition.run/) (two different Tasks, one for blind, one for sighted)
+The dynamic scripts for the experiment are:
+- *./index_blind.html*
+- *./index_sighted.html*.
+- 
+These two versions have been implemented as the trial distributions and instructions differ slightly between the two. The experiment was run and stored on [Cognition.run] (https://www.cognition.run/) (two different tasks, one for blind participants and one for sighted participants).
 
-#### ****'stimuli_selection/*'****
-Folder  with the scripts and files used for the selection of the stimuli and storing.
-You can find the description of the steps used to choose and build the stimuli files in *'./stimuli_selection_documentation.R'*.
-Two important directories are *'./scripts/bestworst_tools/*'* which contains the software developed
-by (Hollis, 2018) for the best-worst scaling technique distribution that we employed for the 
-trials and we will use for the data analysis. *'./scripts/sm0-modelExploration_3'* contains the 
-exploration of the models we employed in this study (Word2Vec and Vispa) to select the stimuli.
+#### Directory Structure
+
+#### ****'stimuli_selection/'****
+This folder contains the scripts and files used for the selection and storage of stimuli.
+
+- **Documentation:** The description of the steps used to choose and build the stimuli files can be found in *'./stimuli_selection_documentation.R'*.
+- **Important Directories:**
+  - **'./scripts/bestworst_tools/'**: Contains the software developed by Hollis (2018) for the best-worst scaling technique distribution used for the trials and data analysis.
+  - **./scripts/sm0-modelExploration_3/**: Contains the exploration of the models (Word2Vec and Vispa) employed in this study to select the stimuli.
 
 #### ****'input_data/*'****
-This folder contains all the files which serve as stimuli and instructions for the experiment.
-The *'./audio_data/'* folder, since the experiment will be done within audio data and the instructions will be given as such,
-contains the audio version of the experiment instructions, stimuli and division sounds. The *'./audio_data/instructions/'* folder
-has files for the both versions for sighted and blind participants and there are folder which have 
-the specific instructions for the two versions of the experiment. Some of them are common between the two of them
-and those are inside the *'./audio_data/instructions/common/'* folder.
-*'./audio_data/stimuli/'* folder contains different directories, seen the selection of the stimuli being categorical.
-The *'./papaParse_files/'* contains the necessary files to be uploaded on cognition.run to let
-papaParse library being uploaded.
-The *'./stimuli_dataframe/'* contains the .csv files where the stimuli and their distribution
-over trials has been stored. This is the input file that the index scripts will read and associate
-to the audio files stimuli.
+This folder contains all files serving as stimuli and instructions for the experiment.
 
-All those files are inside different folders for clarity and tideness. In the actual experiment code,
-seen cognition.run settings, the files have been uploaded in one common directory at source code level.
-That's why in the *./index_blind.html* and *./index_sighted.html* the directory paths are
-not taking into account the different directories but just the file names.
+- **Audio Data:**
+  - **'./audio_data/'**: Contains the audio version of the experiment instructions, stimuli, and division sounds.
+  - **'./audio_data/instructions/'**: Contains instruction files for both sighted and blind participants. Some of them are common between the two of them
+and those are inside the *'./audio_data/instructions/common/'* folder.
+  - **./audio_data/stimuli/:** Contains directories with the categorical selection of stimuli.
+    
+- **PapaParseFiles**
+  - **'./papaParse_files/'**: Contains the necessary files to be uploaded on Cognition.run for the papaParse library.
+
+- **Stimuli Dataframe:**
+  - **'./stimuli_dataframe/'**: Contains the .csv files where the stimuli and their distribution over trials are stored. This is the input file that the index scripts will read and associate with the audio file stimuli.
+
+**Note**
+All files are organized into different folders for clarity and tidiness. In the actual experiment code, due to Cognition.run settings, the files have been uploaded into a single common directory at the source code level. Therefore, in **'./index_blind.html'** and **'./index_sighted.html'**, the directory paths only include file names without considering different directories.
 
 ### Requirements
 The dynamical source codes have been implemented over a JsPsych 7.3.4 version, which have been retrieved
