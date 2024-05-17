@@ -45,7 +45,7 @@ This folder contains the scripts and files used for the selection and storage of
   - *'./scripts/bestworst_tools/'*: Contains the software developed by Hollis (2018) for the best-worst scaling technique distribution used for the trials and data analysis.
   - *./scripts/sm0-modelExploration_3/*: Contains the exploration of the models (Word2Vec and Vispa) employed in this study to select the stimuli.
 
-#### ****'input_data/*'****
+#### ****'input_data/'****
 This folder contains all files serving as stimuli and instructions for the experiment.
 
 - **Audio Data:**
@@ -62,7 +62,7 @@ and those are inside the *'./audio_data/instructions/common/'* folder.
 
 **Note**
 
-All files are organized into different folders for clarity and tidiness. In the actual experiment code, due to Cognition.run settings, the files have been uploaded into a single common directory at the source code level. Therefore, in **'./index_blind.html'** and **'./index_sighted.html'**, the directory paths only include file names without considering different directories.
+All files are organized into different folders for clarity and tidiness. In the actual experiment code, due to Cognition.run settings, the files have been uploaded into a single common directory at the source code level. Therefore, in *'./index_blind.html'* and *'./index_sighted.html'*, the directory paths only include file names without considering different directories.
 
 ### Requirements
 The dynamical source codes have been implemented over a JsPsych 7.3.4 version, which have been retrieved
