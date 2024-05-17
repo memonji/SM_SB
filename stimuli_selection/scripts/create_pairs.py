@@ -1,18 +1,19 @@
-# Project: Semantic Maps in sighted and blind individuals
+# Project: An exploration of Semantic Maps in sighted and blind individuals
 # Author: Emma Angela Montecchiari
 # Requirements: Python 3.0 version
 
-# This script is used in the process of creating the stimuli for the experiment
-# In particular it creates the pairs of words stimuli needed.
+# This script is used in the process of creating the stimuli for the experiment.
+# Specifically, it creates the pairs of word stimuli needed.
 
-# Through this script, from a .txt file with a given amount of words,
-# it created all possible pairs between them without repetitions in order
-# (e.g. from both 'ball-sun' and 'sun-ball', it computes just one)
+# Using this script, from a .txt file with a given set of words,
+# it creates all possible pairs between them without repetitions
+# (e.g., it considers 'ball-sun' and 'sun-ball' as the same pair and computes just one).
+# The .txt file is 1 word : 1 line, without empty lines.
 
-# It can easily be run from the terminal [python3 create_pairs.py] and it will generate a new file
-# in the specified directory. You can input the directory of the input and output files in lines 82-83.
+# You can easily run it from the terminal using [python3 create_pairs.py], and it will generate a new file
+# in the specified directory. You can input the directories of the input and output files in lines 92-93.
 
-##############
+#############################################################################################################
 
 def read_words_from_file(file_name):
     try:
@@ -79,8 +80,8 @@ def write_pairs_to_file(pairs, output_file):
 
 def main():
     # MODIFIABLE WITH FILE PATHS OF WORDS AND PAIRS
-    input_file = 'SM_SB_stimuli_single_words.txt'
-    output_file = 'SM_SB_stimuli_pairs.txt'
+    input_file = './stimuli_single_words.txt'
+    output_file = './stimuli_pairs.txt'
     try:
         words = read_words_from_file(input_file)
         pairs = generate_pairs(words)
