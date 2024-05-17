@@ -1,20 +1,23 @@
 <!--
-Author:
-Emma Angela Montecchiari - Master's student at Università di Trento-SISSA
+Project: An exploration of semantic maps in sighted and blind individuals
+Author: Emma Angela Montecchiari 
 
-Description:
+Description: 
 This script contains the code to show to Unione Italiana Ciechi as a demo version.
 
-I am working on a MacOS High Sierra Version 10.13.6, 2,2 GHz Intel Core i7.
+Warnings:
+The script is hosted on cognition.run.
+The files which are now organized in folders were uploaded in a common folder there.
+Therefore the paths in the script are relative to this organization and directly address the files name.
 
-For the audio recordings:
-I used https://elevenlabs.io/ for the instructions;
-I used https://speechgen.io/en/tts-italian/ for the stimuli
+Dependencies:
+I am retrieving the jsPsych (version 7.3.4) library from the website: https://www.jspsych.org/7.3/
+PapaParse 5.0.2 (the library has been manually uploaded in cognition.run. The uploaded files are stored in './input_data/papaParse_files/')
+JavaScript 1.5
 
-I've put the all files in the main directory cause the demo is running on cognition.run
 -->
-<!--jsPsychCallFunction-->
 
+<!--jsPsychCallFunction-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,15 +63,12 @@ I've put the all files in the main directory cause the demo is running on cognit
       'ingresso.mp3', 'rosso.mp3', 'infante.mp3', 'mimosa.mp3', 'fabbrica.mp3',  'gilet.mp3',
        'separation_sound_F.mp3', 'silence_audio.mp3',
        'demo_example_to_repeat.mp3', 'demo_instructions_examples_1.mp3', 'demo_instructions_to_repeat.mp3',
-        'demo_ending_message.mp3', 'demo_beginning_message.mp3', 'demo_understanding_check.mp3',
+      'demo_ending_message.mp3', 'demo_beginning_message.mp3', 'demo_understanding_check.mp3',
       'demo_instructions_examples_2.mp3', 'demo_instructions_examples_3.mp3'
     ]
   });
 
   var timeline = [];
-  
-  // var runId = experimentData.run_id;
-  // console.log(runId)
 
   var official_stimuli = [
     { audio1: 'citta.mp3', audio2: 'piazza.mp3' },
@@ -115,14 +115,6 @@ I've put the all files in the main directory cause the demo is running on cognit
   ];
 
   /* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
-
-  /* Participant ID textbox */
-  var sbjIDPrompt = {
-    type: jsPsychSurveyHtmlForm,
-    preamble: '<p>Scriva il numero ID a cui è stato associato:</p>',
-    html: '<input name="ID" type="text" required/></p><p></p>',
-    button_label: "Continue",
-  };
   
   /* Fullscreen and starting button */
   var start_button = {
@@ -157,7 +149,6 @@ I've put the all files in the main directory cause the demo is running on cognit
         post_trial_gap: 5000
       },
     ]
-
   };
 
   /* Understanding check: giving options to get back to instructions/examples */
@@ -275,7 +266,6 @@ I've put the all files in the main directory cause the demo is running on cognit
 
   /* ==================== TIMELINE ==================== */
 
-  // timeline.push(sbjIDPrompt);
   timeline.push(start_button);
   
   timeline.push(instructions_examples);
