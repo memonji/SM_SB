@@ -84,7 +84,7 @@ Stimuli: https://speechgen.io/en/tts
 <body></body>
 <script>
 
-  /* ==================== INITIALIZATION ==================== */
+ /* ==================== INITIALIZATION ==================== */
 
 /* =========== Initialization ========= */
 
@@ -111,53 +111,24 @@ var jsPsych = initJsPsych({
 
 var timeline = [];
 
-var database_path = "trials_dataframe_sighted.csv";
+var database_path = "trials_dataframe_blind.csv";
 
 /* =========== Coordinates and user interaction ========= */
 /* These variables extract the coordinates from the information contained in the provided
 * link, such as subject id and section */
 
-/* 
-Having 120 different conditions (cognition.run setting), each
-is assigned to one of the 120 participants.
-In this way, each subj_id value is different and in 1 to 120 range and corresponds
-to the values in the .csv input file, allowing to discriminate participants.
-*/
+var urlParams = new URLSearchParams(window.location.search);
 
-function subj_id (i) {
-  return {CONDITION: i, subj_id_file_mapping: 'sbj_sighted_' + i}
-};
+var subj_id = urlParams.get('id');
+var subj_id_map = 'sbj_blind_' + subj_id;
 
-var subj_id = subj_id(CONDITION);
-console.log(subj_id);
-
-var subj_id_file_mapping = subj_id.subj_id_file_mapping
-console.log('subj_id', subj_id_file_mapping);
+var section = urlParams.get('section');
+console.log(subj_id_map, 'section', section);
 
 jsPsych.data.addProperties({
-  subj_id_mapping: subj_id_file_mapping,
-  condition: CONDITION,
+  subj_id_mapping: subj_id_map,
+  section: section
 });
-
-/* =========== Prolific management ========= */
-
-var subject_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
-var study_id = jsPsych.data.getURLVariable('STUDY_ID');
-var session_id = jsPsych.data.getURLVariable('SESSION_ID');
-
-jsPsych.data.addProperties({
-  subject_id: subject_id,
-  study_id: study_id,
-  session_id: session_id
-});
-
-/* Participant ID textbox */
-var sbjIDPrompt = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: '<p>Prolific ID:</b></p>',
-  html: '<input name="ID" type="text" required/></p><p></p>',
-  button_label: "Continua",
-};
 
 /* =========== Stimuli audio paths ========= */
 
@@ -166,7 +137,7 @@ var official_stimuli_mapping = [
   {word: 'agenda', audio: 'agenda.mp3'},
   {word: 'anello', audio: 'anello.mp3'},
   {word: 'appuntamento', audio: 'appuntamento.mp3'},
-  {word: 'autorità', audio: 'autorità.mp3'},
+  {word: 'autorita', audio: 'autorita.mp3'},
   {word: 'autostrada', audio: 'autostrada.mp3'},
   
   {word: 'bersaglio', audio: 'bersaglio.mp3'},
@@ -238,24 +209,201 @@ var official_stimuli_mapping = [
   {word: 'viola', audio: 'viola.mp3'},
 ];
 
-/* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
+/* ==================== CONSENT FORM ==================== */
 
 /* Fullscreen and starting button */
 var start_button = {
   type: jsPsychFullscreen,
   fullscreen_mode: true,
   message: `<p>Benvenuti all'esperimento! Clicchi il bottone qua sotto per iniziare. Se non si desidera più partecipare, è possibile uscire chiudendo la pagina web in ogni momento.</p>`,
-  button_label: 'Inizia',
+  button_label: 'Inizia'
 };
 
-/* Instructions and examples */
+var consent_form = {
+  timeline: [
+    {
+      /*
+      Benvenuti all’esperimento intitolato ’Esplorazione di mappe 
+      semantiche in popolazioni vedenti e non-vedenti’ sviluppato 
+      presso la Scuola Internazionale di Studi Avanzati a Trieste. 
+      Grazie per la vostra partecipazione!
+      
+      La ricercatrice principale è Emma Angela Montecchiari,
+      studentessa magistrale di Cognitive Science tra Sissa e 
+      Università di Trento. Lo studio è svolto con supervisione d
+      i Davide Crepaldi, professore nel dipartimento di Neuroscienze 
+      Cognitive della Sissa, e co-supervisione di Roberto Bottini, 
+      professore a Trento.
+      
+      Prima di decidere liberamente se vuole partecipare a 
+      questo studio, le chiediamo di ascoltare attentamente 
+      questo consenso informato e porgere ai ricercatori le 
+      domande che riterrà opportune al fine di essere pienamente
+      informato degli scopi, delle modalità di esecuzione
+      dell’esperimento e dei possibili inconvenienti connessi. 
+      La preghiamo di ricordare che questo è un progetto di ricerca e che la sua partecipazione è completamente volontaria. Lei si potrà ritirare in qualunque momento, senza necessariamente dover dare alcuna spiegazione. Può contattare i ricercatori per eventuali domande attraverso indirizzo mail.
+      
+      Lo scopo di questo studio è quello di indagare la rappresentazione
+      concettuale - in che modo pensiamo alle parole e al loro 
+      significato. Per fare questo, raccoglieremo un po’ di 
+      intuizioni sulla similarità tra i significati delle parole,
+      in persone vedenti e non vedenti, e studieremo la loro 
+      struttura.
+      
+      Durante questo esperimento le saranno richiesti dei giudizi 
+      rispetto ad alcune parole che le verranno fatte ascoltare. 
+      Le registrazioni non hanno alcuno scopo medico diagnostico. 
+      Prima dell'esperimento, potrete svolgere un allenamento sul 
+      tipo di compito che vi sarà assegnato.
+      
+      Sarà impegnato per un tempo pari a circa due ore. Non si
+      preoccupi troppo per la durata però. Ci saranno diverse
+      pause nel corso dell’esperimento, circa una ogni 15 minuti. 
+      E comunque abbiamo diviso l’esperimento in 4 blocchi di 
+      mezz’ora ciascuno, che potrà anche fare separatamente.
+      Ad esempio, in giorni diversi.
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_consent_1.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 100
+    },
+    {
+      /*
+      La partecipazione all’esperimento è volontaria.
+      La ricompensa monetaria corrisponde a 10 euro l’ora, 
+      per un ammontare di 20 euro per tutta la durata dell’esperimento.
+      
+      Tutti i dati raccolti grazie alla partecipazione Sua 
+      e di altre persone volontarie saranno custoditi nei 
+      server dell’Area di Neuroscienze della SISSA di Trieste, 
+      e non sarà consentito ad alcuna persona non autorizzata
+      di accedervi.
+      
+      Le sue informazioni personali saranno conservate 
+      separatamente dai risultati della presente ricerca, 
+      cui saranno associati soltanto attraverso un ID arbitrario. 
+      Grazie a questo processo di anonimizzazione dei dati, 
+      a nessun ricercatore sarà possibile analizzare i risultati
+      sapendo da quale specifico partecipante essi provengono. 
+      Inoltre, questa procedura renderà impossibile la Sua
+      identificazione anche nel momento in cui i risultati della 
+      ricerca fossero pubblicati su riviste scientifiche, o 
+      presentati a congressi o in qualsiasi altro pubblico 
+      consesso. Nel momento in cui questa ricerca dovesse 
+      portare alla pubblicazione di un articolo scientifico, 
+      i dati raccolti grazie alla sua partecipazione verranno 
+      pubblicati insieme all’articolo, ovviamente sempre in forma anonima.
+      
+      Più in generale, i dati raccolti saranno trattati in accordo
+      con le leggi sulla privacy e in conformità al Decreto
+      Legislativo 30 giugno 2003 n. 196 “Codice in materia di 
+      protezione dei dati personali” e al Regolamento Europeo 
+      2016/679 (General Data Protection Regulation - GDPR). 
+      Il Responsabile della protezione dei dati (RPD) è l’Avvocato
+      Valentina Carollo che può essere contattato attraverso il
+      seguente indirizzo email: dpo@sissa.it oppure rpd@sissa.it - 
+      PEC: protocollo@pec.sissa.it.
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_consent_2.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 100
+    },
+    ]
+}
 
+var consensus_break = {
+  timeline: [
+    {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      L'esperimento è stoppato.
+      Può farlo ripartire quando vuole premendo qualsiasi tasto sulla tastiera.
+      Non chiuda la pagina web nel frattempo. 
+      */
+      stimulus: "exp_b_short_break.mp3",
+      choices: 'ALL_KEYS',
+      response_ends_trial: true,
+      on_start: function () {
+        jsPsych.pauseExperiment();},
+      on_finish: function () {
+        jsPsych.resumeExperiment();}
+    },
+    {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      Se ritiene di aver ricevuto sufficienti informazioni dagli sperimentatori, 
+      può dare il suo consenso premendo il tasto c. 
+      In tal modo darà inizio all'esperimento.
+      
+      Se invece non desidera esprimere il suo consenso, prema il tasto n. 
+      Può uscire dall'esperimento semplicemente chiudendo la pagina web. 
+      */
+      stimulus: "exp_b_consent_4.mp3",
+      choices: ['n', 'c'],
+      response_ends_trial: true,
+    },
+  ]
+};
+
+function consensus() {
+  var if_node_consent = {
+    timeline: [instructions_examples],
+    conditional_function: function() {
+      var data = jsPsych.data.get().last(1).values()[0];
+      return !!jsPsych.pluginAPI.compareKeys(data.response, 'c');
+    }
+  }
+  var if_node_break = {
+    timeline: [consensus_break],
+    conditional_function: function () {
+      var data = jsPsych.data.get().last(1).values()[0];
+      return !!jsPsych.pluginAPI.compareKeys(data.response, 'b');
+    }
+  }
+  var consensus_response = {
+      /*
+      Prima di esprimere il suo consenso alla partecipazione, le ricordiamo ancora che in caso lei abbia bisogno di delucidazioni su qualunque aspetto della procedura sperimentale, il ricercatore è a sua completa disposizione.
+      Le ricordiamo inoltre che ha il diritto di accedere alle informazioni che abbiamo raccolto su di lei, e ha anche il diritto di correggerli, cancellarli o presentare obiezione. Domande, commenti o richieste rispetto ai dati raccolti o rispetto ai suoi diritti possono essere rivolti a all’ufficio di protezione dati, Data Protection Officer (DPO), nella persona di Valentina Carollo, scrivendo a dpo@sissa.it. .
+
+      Se intende prendere parte alla ricerca, le chiederemo ora di fornire il suo consenso. Esprimendo il suo consenso dichiara:
+      1) di avere almeno 18 anni
+      2) di aver compreso le spiegazioni relative a questo studio e all’intera
+      procedura sperimentale;
+      3) di essere stato informato riguardo alle finalità e agli obiettivi della ricerca in
+      questione;
+      4) di aver avuto la possibilità di porre domande a proposito di qualsiasi
+      aspetto della procedura sperimentale e di aver ottenuto risposte
+      soddisfacenti;
+      5) di aver ricevuto soddisfacenti assicurazioni sulla riservatezza delle
+      informazioni ottenute dall’esame della propria persona;
+      6) di essere consapevole di potersi ritirare in qualsiasi fase dello studio.
+
+      Se volete domandare qualcosa agli sperimentatori, cliccate sul tasto B in modo da poter avere una pausa.
+      Per continuare e fornire il vostro consenso cliccate il tasto C.
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_consent_3.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 100
+    },
+  timeline.push(consensus_response, if_node_break, if_node_consent);
+}
+
+/* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
+
+/* Instructions and examples */
 var instructions_examples = {
   timeline: [
     {
       /* 
       Benvenuti all’esperimento. Grazie per la sua gentile partecipazione e disponibilità.
-      L’esperimento durerà tra i venti e i trenta minuti, con una pausa nel mezzo.
+      L’esperimento durerà circa due ore e sarà diviso in quattro sezioni da mezz'ora.
+      Per ogni sessione avrete una pausa nel mezzo.
       Verranno presentate serie di tre coppie di parole.
       Verrà chiesto per prima cosa di indicare quale coppia contiene le parole più simili tra di loro. 
       Poi quale coppia contiene le parole più diverse.
@@ -264,7 +412,7 @@ var instructions_examples = {
       Non sarà sempre immediato e semplice rispondere. Non preoccupatevi, seguite l'intuizione, senza riflettere troppo.
       */
       type: jsPsychAudioKeyboardResponse,
-      stimulus: "exp_s_instructions_examples_1.mp3",
+      stimulus: "exp_b_instructions_examples_1.mp3",
       choices: 'NO_KEYS',
       trial_ends_after_audio: true,
       post_trial_gap: 500
@@ -307,13 +455,52 @@ var instructions_examples = {
       stimulus: "exp_instructions_examples_3.mp3",
       choices: 'NO_KEYS',
       trial_ends_after_audio: true,
-      post_trial_gap: 5000
+      post_trial_gap: 3000
     },
   ]
 };
 
-/* ======================= Understanding check: giving options to get back to instructions/examples */
+/* Welcome message for the different sections */
+var welcome_message_2 = {
+  /* 
+  Bentornati all'esperimento e benvenuti alla seconda parte.
+  Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+  Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+  */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_welcome_message_2.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 500
+};
 
+var welcome_message_3 = {
+  /* 
+  Bentornati all'esperimento e benvenuti alla terza parte.
+  Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+  Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+  */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_welcome_message_3.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 500
+};
+
+var welcome_message_4 = {
+  /* 
+  Bentornati all'esperimento e benvenuti alla quarta e ultima parte.
+  Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+  Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+  */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_welcome_message_4.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 500
+};
+
+/* ======================= Understanding check: giving options to get back to instructions/examples */
 var example_to_repeat = {
   /*
   Ecco un altro esempio di risposta già svolto
@@ -379,7 +566,6 @@ function understanding_check() {
 }
 
 /* ======================== Clarifications check: giving break options to ask researchers */
-
 /* Short break function. */
 var short_break_message = {
   type: jsPsychAudioKeyboardResponse,
@@ -388,25 +574,13 @@ var short_break_message = {
   Può farlo ripartire quando vuole premendo qualsiasi tasto sulla tastiera.
   Non chiuda la pagina web nel frattempo. 
   */
-  stimulus: "exp_short_break.mp3",
+  stimulus: "exp_b_short_break.mp3",
   choices: 'ALL_KEYS',
   response_ends_trial: true,
   on_start: function () {
     jsPsych.pauseExperiment();},
   on_finish: function () {
     jsPsych.resumeExperiment();}
-};
-
-/* Starting message. */
-var beginning_message = {
-  /* 
-  Bene, sperando che sia tutto chiaro e augurandole un buon inizio di esperimento, cominciamo.
-  */
-  type: jsPsychAudioKeyboardResponse,
-  stimulus: "exp_beginning_message.mp3",
-  choices: 'NO_KEYS',
-  trial_ends_after_audio: true,
-  post_trial_gap: 3000
 };
 
 function researcher_clarifications () {
@@ -436,15 +610,114 @@ function researcher_clarifications () {
     response_ends_trial: true,
   }
   timeline.push(clarification_question, short_break, no_break)
-}
+};
+
+/* General starting message. */
+var beginning_message = {
+  timeline: [
+    {
+      /* 
+      Bene, sperando che sia tutto chiaro e augurandole un buon inizio di esperimento, cominciamo. 
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_beginning_message.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000
+    },
+  ]
+};
+
+/* Beginning message for the different sections */
+var beginning_section_1 = {
+  /* Questa è la prima sessione, durera circa mezz'ora. */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_first_session.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 3000
+};
+
+var beginning_section_2 = {
+  /* Questa è la seconda sessione, durera circa mezz'ora. */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_second_session.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 3000
+};
+
+var beginning_section_3 = {
+  /* Questa è la terza sessione, durera circa mezz'ora. */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_third_session.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 3000
+};
+
+var beginning_section_4 = {
+  /* Questa è la quarta sessione, durera circa mezz'ora. */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_fourth_session.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 3000
+};
 
 /* ==================== CLOSING THE EXP ==================== */
 
 /* Close the experiment */
-var ending_message = {
+var closing_message_1 = {
   type: jsPsychAudioKeyboardResponse,
-  /* L'esperimento è finito. Grazie per aver partecipato! */
-  stimulus: "exp_s_ending_message.mp3",
+  /* 
+  La prima sezione è terminata. Quando vuole, può iniziare la seconda sezione cliccando sul link fornito all'inizio.
+  Grazie ancora per aver partecipato e a presto! 
+  Per uscire, può chiudere la pagina web. 
+  */
+  stimulus: "exp_b_closing_message_1.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 1000,
+};
+
+var closing_message_2 = {
+  type: jsPsychAudioKeyboardResponse,
+  /* 
+  La seconda sezione è terminata.
+  Quando vuole, può iniziare la terza sezione cliccando sul link fornito all'inizio.
+  Grazie ancora per aver partecipato e a presto!
+  Per uscire, può chiudere la pagina web. */
+  stimulus: "exp_b_closing_message_2.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 1000,
+};
+
+var closing_message_3 = {
+  type: jsPsychAudioKeyboardResponse,
+  /* 
+  La terza sezione è terminata.
+  Quando vuole, può iniziare la quarta sezione cliccando sul link fornito all'inizio.
+  Grazie ancora per aver partecipato e a presto!
+  Per uscire, può chiudere la pagina web. 
+  */
+  stimulus: "exp_b_closing_message_3.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 1000,
+};
+
+/* End the experiment */
+var closing_message_4 = {
+  /* 
+  Anche l'ultima sezione è terminata.
+  Grazie mille ancora per aver partecipato al nostro esperimento!
+  Quando vuole, può uscire chiudendo la pagina web.
+  Arrivederci!
+  */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_closing_message_4.mp3",
   choices: 'NO_KEYS',
   trial_ends_after_audio: true,
   post_trial_gap: 1000,
@@ -456,19 +729,10 @@ var exit_fullscreen = {
   delay_after: 0
 };
 
-/* Prolific redirect */
-var redirect = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `<p> Premere il bottone qui sotto per terminare. Si dovrebbe essere automaticamente reindirizzati a Prolific con il codice di completamento. </p>`,
-  choices: ['Invio'],
-  on_finish: function() {
-    window.location = "https://app.prolific.co/submissions/complete?cc=C1HIG4XT" // redirect Prolific participants to completed submission page
-  }
-};
-
 /* ==================== STIMULI MANAGEMENT ==================== */
 
 /* =========== Reading and parsing the stimuli csv dataset ========= */
+
 function readTextFile(file, subjectID, timeline, callback) {
   // Create a new XMLHttpRequest object
   var rawFile = new XMLHttpRequest();
@@ -534,8 +798,17 @@ function readTextFile(file, subjectID, timeline, callback) {
             console.log('Processed data ready');
             // Call the callback function with the processed data
             callback(processedData);
-            // Ending and redirect
-            timeline.push(ending_message, exit_fullscreen, redirect);
+            // Push timeline events based on section
+            if (section === '1') {
+              timeline.push(closing_message_1)
+            } else if (section === '2') {
+              timeline.push(closing_message_2);
+            } else if (section === '3') {
+              timeline.push(closing_message_3)
+            } else if (section === '4') {
+              timeline.push(closing_message_4)
+            }
+            timeline.push(exit_fullscreen);
             jsPsych.run(timeline);
           } else if (stimuliChunk.length > 0) {
             console.error('Watch out: some stimuli remained outside');
@@ -546,116 +819,148 @@ function readTextFile(file, subjectID, timeline, callback) {
       });
     }
   }
+  // Send the XMLHttpRequest
   rawFile.send(null);
 }
 
-/* =========== Word-audio mapping and presentation timing ========= */
+/* =========== Present stimuli and process responses ========= */
 
 /* Short break function. */
 var break_experiment = {
-  type: jsPsychHtmlButtonResponse,
-  choices: ['Continua'],
-  stimulus: "Tempo di una pausa! \n" +
-          "Si prenda cinque minuti. \n" +
-          "Clicchi il pulsante qua sotto per ricominciare.",
+  /* Tempo di una pausa!
+  Si prenda cinque minuti se vuole.
+  Clicchi qualsiasi tasto sulla tastiera per riprendere.
+  Non chiuda la pagina web nel frattempo. */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_break_experiment.mp3",
+  choices: 'ALL_KEYS',
+  response_ends_trial: true,
   on_start: function () {
     jsPsych.pauseExperiment();},
   on_finish: function () {
-    jsPsych.resumeExperiment();},
-  post_trial_gap: 800
-}
+    jsPsych.resumeExperiment();}
+};
 
 function presentAndProcessStimuli(processedData) {
   // Define break interval and stimuli counter
-  // 118 trials (of 3 pairs) in total.
-  // Break after every 60 trials, almost half journey
+  // 120 trials (of 3 pairs) in total.
+  // Break after every 60 trials
   var breakInterval = 60;
   var stimuliCounter = 0;
   // Loop through each stimuli chunk in the processed data
-  processedData.forEach(stimuliChunk => {
+  processedData.forEach((stimuliChunk, chunkIndex) => {
     stimuliCounter++;
-    // Loop through each pair of stimuli in the chunk
-    stimuliChunk.forEach(pair => {
-      pair.forEach((word, index) => {
-        // Find mapping for the word in the stimuli
-        var mapping = official_stimuli_mapping.find(item => item.word === word);
-        if (mapping) {
-          // console.log("Stimulus:", mapping.audio, 'word', word, 'index', index); // Check if audio stimulus path is correct
-          // Define presentation parameters for the word stimulus
-          var word_presentation = {
+    // Check the section and chunk index to determine stimuli presentation range
+    if (
+            (section === '1' && chunkIndex >= 0 && chunkIndex <= 118) ||
+            (section === '2' && chunkIndex >= 119 && chunkIndex <= 236) ||
+            (section === '3' && chunkIndex >= 237 && chunkIndex <= 354) ||
+            (section === '4' && chunkIndex >= 355 && chunkIndex <= 472)
+    ){
+      // Loop through each pair of stimuli in the chunk
+      stimuliChunk.forEach(pair => {
+        pair.forEach((word, index) => {
+          // Find mapping for the word in the stimuli
+          var mapping = official_stimuli_mapping.find(item => item.word === word);
+          if (mapping) {
+            // console.log("Stimulus:", mapping.audio, 'word', word, 'index', index); // Check if audio stimulus path is correct
+            // Define presentation parameters for the word stimulus
+            var word_presentation = {
+              type: jsPsychAudioKeyboardResponse,
+              stimulus: mapping.audio,
+              choices: "NO_KEYS",
+              trial_ends_after_audio: true,
+              post_trial_gap: index === 0 ? 160 : 900, // Longer gap after second word
+              on_finish: function (data) {
+                if (data.audio_playback_error) {
+                  console.error("Audio playback error:", data.audio_playback_error);
+                }
+              },
+            };
+            // Add word presentation trial to timeline
+            timeline.push(word_presentation)
+            // console.log("Word presented:", word_presentation.stimulus);
+          } else {
+            console.error("Mapping not found for word:", word);
+          }
+        });
+      });
+
+      // Define response trials after presenting stimuli pairs
+      var response = {
+        timeline: [
+          {
             type: jsPsychAudioKeyboardResponse,
-            stimulus: mapping.audio,
-            choices: "NO_KEYS",
-            trial_ends_after_audio: true,
-            post_trial_gap: index === 0 ? 160 : 900, // Longer gap after second word
+            stimulus: 'separation_sound_F.mp3',
+            choices: ["1", "2", "3"],
+            trial_duration: 400,
+            response_ends_trial: true,
             on_finish: function (data) {
               if (data.audio_playback_error) {
-                console.error("Audio playback error:", data.audio_playback_error);}},
-          };
-          // Add word presentation trial to timeline
-          timeline.push(word_presentation)
-          // console.log("Word presented:", word_presentation.stimulus);
-        } else {
-          console.error("Mapping not found for word:", word);
-        }
-      });
-    });
+                console.error("Audio playback error:", data.audio_playback_error);
+              }
+            }
+          },
+          {
+            type: jsPsychAudioKeyboardResponse,
+            stimulus: 'silence_audio.mp3',
+            choices: ["1", "2", "3"],
+            response_ends_trial: true,
+            post_trial_gap: 1000,
+            on_finish: function (data) {
+              if (data.audio_playback_error) {
+                console.error("Audio playback error:", data.audio_playback_error);
+              }
+            }
+          },
+        ]
+      };
+      timeline.push(response); // Add response trials to timeline
 
-    // Define response trials after presenting stimuli pairs
-    var response = {
-      timeline: [
-        {
-          type: jsPsychAudioKeyboardResponse,
-          stimulus: 'separation_sound_F.mp3',
-          choices: ["1", "2", "3"],
-          response_ends_trial: true,
-          on_finish: function (data) {
-            if (data.audio_playback_error) {
-              console.error("Audio playback error:", data.audio_playback_error);
-            }
-          }
-        },
-        {
-          type: jsPsychAudioKeyboardResponse,
-          stimulus: 'silence_audio.mp3',
-          choices: ["1", "2", "3"],
-          response_ends_trial: true,
-          post_trial_gap: 1000,
-          on_finish: function (data) {
-            if (data.audio_playback_error) {
-              console.error("Audio playback error:", data.audio_playback_error);
-            }
-          }
-        },
-      ]
-    };
-    // Add response trials to timeline
-    timeline.push(response);
-    // Check if it's time for a break
-    if (stimuliCounter % breakInterval === 0 && stimuliChunk !== 0) {
-      timeline.push(break_experiment);
+      // Check if it's time for a break
+      if (stimuliCounter % breakInterval === 0 && stimuliChunk !== 0) {
+        timeline.push(break_experiment);
+      }
     }
-  });
+  })
 }
 
 /* ==================== TIMELINE ==================== */
 
-timeline.push(sbjIDPrompt);
-
+// what to do with these? are they necessary?
 timeline.push(start_button);
-timeline.push(instructions_examples);
 
-understanding_check()
-researcher_clarifications()
+// Specific timeline based on the assigned section
+if (section === '1') {
+  timeline.push(consent_form);
+  consensus();
+  timeline.push(instructions_examples);
+  understanding_check();
+  researcher_clarifications ();
+} else if (section ==='2') {
+  timeline.push(welcome_message_2);
+  timeline.push(instructions_to_repeat);
+  understanding_check();
+  researcher_clarifications ();
+} else if (section === '3') {
+  timeline.push(welcome_message_3);
+  timeline.push(instructions_to_repeat);
+  understanding_check();
+  timeline.push(beginning_message)
+} else if (section === '4') {
+  timeline.push(welcome_message_4);
+  timeline.push(instructions_to_repeat);
+  timeline.push(beginning_message)
+}
 
-readTextFile(database_path, subj_id_file_mapping, timeline, function(processedData) {
+readTextFile(database_path, subj_id_map, timeline, function(processedData) {
   presentAndProcessStimuli(processedData);
   // console.log('PROCESSED_DATA', processedData)
 });
 
 console.log("Timeline:", timeline);
 
-/* ==================== RUNNING ==================== */
+/* ==================== PRE-LOADING AND RUNNING ==================== */
 
 jsPsych.run(timeline)
 
