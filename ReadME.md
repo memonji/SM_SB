@@ -42,23 +42,23 @@ This folder contains the scripts and files used for the selection and storage of
 
 - **Documentation:** The description of the steps used to choose and build the stimuli files can be found in *'./stimuli_selection_documentation.R'*.
 - **Important Directories:**
-  - **'./scripts/bestworst_tools/'**: Contains the software developed by Hollis (2018) for the best-worst scaling technique distribution used for the trials and data analysis.
-  - **./scripts/sm0-modelExploration_3/**: Contains the exploration of the models (Word2Vec and Vispa) employed in this study to select the stimuli.
+  - *'./scripts/bestworst_tools/'*: Contains the software developed by Hollis (2018) for the best-worst scaling technique distribution used for the trials and data analysis.
+  - *./scripts/sm0-modelExploration_3/*: Contains the exploration of the models (Word2Vec and Vispa) employed in this study to select the stimuli.
 
 #### ****'input_data/*'****
 This folder contains all files serving as stimuli and instructions for the experiment.
 
 - **Audio Data:**
-  - **'./audio_data/'**: Contains the audio version of the experiment instructions, stimuli, and division sounds.
-  - **'./audio_data/instructions/'**: Contains instruction files for both sighted and blind participants. Some of them are common between the two of them
+  - *'./audio_data/'*: Contains the audio version of the experiment instructions, stimuli, and division sounds.
+  - *'./audio_data/instructions/'*: Contains instruction files for both sighted and blind participants. Some of them are common between the two of them
 and those are inside the *'./audio_data/instructions/common/'* folder.
-  - **./audio_data/stimuli/:** Contains directories with the categorical selection of stimuli.
+  - *./audio_data/stimuli/:* Contains directories with the categorical selection of stimuli.
     
 - **PapaParseFiles**
-  - **'./papaParse_files/'**: Contains the necessary files to be uploaded on Cognition.run for the papaParse library.
+  - *'./papaParse_files/'*: Contains the necessary files to be uploaded on Cognition.run for the papaParse library.
 
 - **Stimuli Dataframe:**
-  - **'./stimuli_dataframe/'**: Contains the .csv files where the stimuli and their distribution over trials are stored. This is the input file that the index scripts will read and associate with the audio file stimuli.
+  - *'./stimuli_dataframe/'*: Contains the .csv files where the stimuli and their distribution over trials are stored. This is the input file that the index scripts will read and associate with the audio file stimuli.
 
 **Note**
 
