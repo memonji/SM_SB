@@ -1,48 +1,43 @@
 <!--
-Author: Emma Angela Montecchiari (emma.montecchiari@studenti.unitn.it)
+Project: An exploration of semantic maps in sighted and blind individuals
+Author: Emma Angela Montecchiari 
 
-This script runs the experiment version designed for blind participants.
-It's split into four 30-minute sections, totaling 2 hours.
+Experiment Version for Blind Participants
+Duration: 2 hours, split into four 30-minute sections.
 
-Each participant is associated with 472 trials, 120 trials in each section.
-With about 30 participants, we'll do a total of 14,160 trials.
-Each trial contains three pairs of word stimuli, extracted from
+Each participant is associated with 472 trials, divided into 120 trials per section.
+With approximately 30 participants, we'll conduct a total of 14,160 trials.
+Each trial contains three pairs of word stimuli, extracted from:
 'input_data/stimuli_dataframe/trials_dataframe_blind.csv'.
 
-Participants get four links, one for each section. They look like this:
+Participants receive four links, one for each section. Like:
 - Section 1: https://oosheywr0r.cognition.run/?id=122&section=1
 - Section 2: https://oosheywr0r.cognition.run/?id=122&section=2
 - Section 3: https://oosheywr0r.cognition.run/?id=122&section=3
 - Section 4: https://oosheywr0r.cognition.run/?id=122&section=4
 
-The script grabs the right stimuli for each participant using their ID (like 'id=7')
-and section (like 'section=4').
-Each section has slightly different instructions and audio cues, so there are different functions and audio files.
-Since, cognition.run free version doesn't provide the option for files bigger than 2MB,
-the instructions files are segmented in smaller ones.
+The script grabs the right stimuli for each participant using their ID (e.g., 'id=7') and section (e.g., 'section=4').
+Each section has slightly different instructions and audio cues, requiring different functions and audio files.
+Due to the file size limitation (2MB) in the free version of cognition.run, instruction files are segmented into smaller parts.
 
-We use a mapping object to link words to audio files.
-Words come from the 'trials_dataframe_blind.csv' file, and we stop at the end of each section
-for each participant trials distribution.
+A mapping object links words to audio files.
+Words are sourced from the 'trials_dataframe_blind.csv' file, and we pause at the end of each section for each participant's trials distribution.
 
-Before presenting stimuli, participants get instructions, where
-there is an explanation of the experiment structure and task and some
-examples are provided.
-These are in Italian, as participants are Italian mother-tongue.
-The instructions transcripts are in the code comments
+Before presenting stimuli, participants receive instructions that explain the experiment structure and task,
+along with some examples. These instructions are in Italian, as participants are native Italian speakers.
+The transcripts of these instructions are included in the code comments.
 
-The experiment runs on cognition.run, therefore the files path in the core re-direct to the plain file names (cognition.run structure)
-To run it locally, you'd need to change the file paths or put all the data files in one folder at the same level as the source index code.
-The instructions are in:
+Since the experiment runs on cognition.run, file paths in the core are simplified to plain file names (cognition.run structure).
+To run the experiment locally, you'd need to change the file paths or place all the data files in one folder at the same level as the source index code.
+Instruction files:
     './input_data/audio_data/instructions/blind_specific/*'
-    + './input_data/audio_data/instructions/common/*'
-The separation sounds and stimuli in:
+    './input_data/audio_data/instructions/common/*'
+Separation sounds and stimuli:
     './input_data/audio_data/sounds/*'
     './input_data/audio_data/stimuli/all/*'
 
 See the ReadMe for more information.
 
-------------
 Dependencies:
 - JsPsych 7.3.4
 - JavaScript 1.5
