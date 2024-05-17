@@ -65,45 +65,53 @@ and those are inside the *'./audio_data/instructions/common/'* folder.
 All files are organized into different folders for clarity and tidiness. In the actual experiment code, due to Cognition.run settings, the files have been uploaded into a single common directory at the source code level. Therefore, in *'./index_blind.html'* and *'./index_sighted.html'*, the directory paths only include file names without considering different directories.
 
 ### Requirements
-The dynamical source codes have been implemented over a JsPsych 7.3.4 version, which have been retrieved
-online through https://www.jspsych.org/7.3/, papaParse 5.0.2 version (associated files stored in *'input_data/papaParse_files/*'*)
-and JavaScript 1.5,
 
-The *'stimuli_selection/scripts/create_pairs.py*' has been developed within a Python 3.11.3 version.
-The *'stimuli_selection/scripts/bestworst_tools/*' has been developed within a Python 2.7 version, and we used
-a Python 2.7.18 version when using it.
-The *'stimuli_selection/scripts/sm0-modelExploration_3/*' has been developed within a R ### version.
-The *'stimuli_selection_documentation.R/scripts/sm0-modelExploration_3/stimuli_selection_documentation.R*' has been built within a R version 4.2.3 (2023-03-15) -- "Shortstop Beagle"
+**Dynamical Scripts**
+
+The dynamic scripts for the experiment have been implemented using:
+
+- JsPsych 7.3.4: Retrived through https://www.jspsych.org/7.3/
+- PapaParse 5.0.2: Associated files are stored in './input_data/papaParse_files/'
+- JavaScript 1.5
+
+**Stimuli Selection Scripts**
+- create_pairs.py: Developed with Python 3.11.3
+- bestworst_tools/: Developed with Python 2.7, tested using Python 2.7.18
+- sm0-modelExploration_3/: Developed with R (specific version needed)
+- stimuli_selection_documentation.R: Developed with R version 4.2.3 
 
 ****
 ### Copyright & thanks
 
 **Distributional Semantics Models**
 
-We explored pre-built semantic spaces using the LSAfun package developed by (Günther et al., 2015)
+We explored pre-built semantic spaces using the LSAfun package developed by Günther et al. (2015), 
+The pre-built semantic spaces we use available at https://sites.google.com/site/fritzgntr/software-resources/semantic_spaces.
 
-We used a pre-built semantic space developed by Fritz Günther (https://sites.google.com/site/fritzgntr/software-resources/semantic_spaces)
-created using the cbow algorithm as implemented in the word2vec model (Mikolov et al., 2013)
-using the parameter set shown to produce the best results by (Baroni et al., 2014)
+- Language-based DSM: This space was created using the CBOW algorithm as implemented in the Word2Vec model (Mikolov et al., 2013), using the parameter set shown to produce the best results by Baroni et al. (2014).
+[Available at https://sites.google.com/site/fritzgntr/software-resources/semantic_spaces (*baroni*)]
 
-We used ViSpa DSM developed by (Günther et al., 2021. https://vectorswebtool.eu.pythonanywhere.com/#)
-The pre-built semantic space we explored is at https://sites.google.com/site/fritzgntr/software-resources/vispa
+- Image-based DSM: Developed by Günther et al. (2021). The pre-built semantic space we explored is available at ViSpa Semantic Spaces and the tool at ViSpa DSM Tool.
+[Semantic Space Available at https://sites.google.com/site/fritzgntr/software-resources/vispa] [Vispa Tool available at https://vectorswebtool.eu.pythonanywhere.com/#]
 
 **Stimuli distribution and data analysis**
 
-The best_worst scaling tools have been built by Geoff Hollis (and Chris Westbury). 
-Main work on this in (Hollis, 2018) and (Hollis & Westbury, 2018)
+The best-worst scaling tools were built by Geoff Hollis (and Chris Westbury). Main work on this can be found in:
+
+- Hollis (2018)
+- Hollis & Westbury (2018)
 
 **Lexical Semantics Annotations**
 The lexical semantics variables with which we annotated our database come from the work of:
-- (Brysbaert et al., 2013)
-- (Brysbaert et al. 2018)
-- (Scott et al., 2018)
+- Brysbaert et al. (2013)
+- Brysbaert et al. (2018)
+- Scott et al. (2018)
 
 **Text-to-speech tools**
 
-The audio files for instructions and stimuli have been built using https://elevenlabs.io/ for the instructions and
-https://speechgen.io/en/tts- for the stimuli.
+The audio files for instructions and stimuli were created using:
+- Eleven Labs [https://elevenlabs.io] for the instructions
+- SpeechGen [https://speechgen.io/en/tts-] for the stimuli
 
 #### Main References 
 
