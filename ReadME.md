@@ -33,7 +33,7 @@ The dynamic scripts for the experiment are:
 - *./index_blind.html*
 - *./index_sighted.html*.
   
-These two versions have been implemented as the trial distributions and instructions differ slightly between the two. The experiment was run and stored on [Cognition.run] (https://www.cognition.run/) (two different tasks, one for blind participants and one for sighted participants).
+These two versions have been implemented as the trial distributions and instructions differ slightly between the two. The experiment was run and stored on [Cognition Run][https://www.cognition.run/] (two different tasks, one for blind participants and one for sighted participants).
 
 #### Directory Structure
 
