@@ -85,667 +85,883 @@ Stimuli: https://speechgen.io/en/tts
 
   /* ==================== INITIALIZATION ==================== */
 
-  /* =========== Initialization ========= */
-
-  var jsPsych = initJsPsych({
-    use_webaudio: false,
-    message_progress_bar: 'Barra di completamento',
-    show_progress_bar: true,
-    audio_to_preload: [
-      'agenda.mp3', 'anello.mp3', 'appuntamento.mp3', 'autorità.mp3', 'autostrada.mp3',
-      'bersaglio.mp3', 'bidet.mp3', 'blu.mp3', 'braccialetto.mp3', 'candela.mp3',
-      'caramella.mp3', 'cassettiera.mp3', 'cavolo.mp3', 'ciliegio.mp3', 'ciotola.mp3',
-      'cipolla.mp3', 'coccodrillo.mp3', 'coperta.mp3', 'crostino.mp3', 'cucchiaio.mp3',
-
-      'cuscino.mp3', 'damigiana.mp3', 'diario.mp3', 'documento.mp3', 'eccentrico.mp3',
-      'equilatero.mp3', 'equilibrio.mp3', 'fiammifero.mp3', 'forchetta.mp3', 'gessetto.mp3',
-      'giallo.mp3', 'lanterna.mp3', 'lattuga.mp3', 'lavagna.mp3', 'leone.mp3',
-      'libreria.mp3', 'limone.mp3', 'mais.mp3', 'mappa.mp3', 'menta.mp3',
-
-      'panchina.mp3', 'penna.mp3', 'piatto.mp3', 'pidocchio.mp3', 'pomodoro.mp3',
-      'portafoglio.mp3', 'posacenere.mp3', 'rana.mp3', 'rosa.mp3', 'satellite.mp3',
-      'sega.mp3', 'soglia.mp3', 'sole.mp3', 'spinaci.mp3', 'spremiagrumi.mp3',
-      'stuzzicadenti.mp3', 'succo.mp3', 'timone.mp3', 'verde.mp3', 'viola.mp3']
-  });
-
-  var timeline = [];
-
-  var database_path = "trials_dataframe_blind.csv";
-
-  /* =========== Coordinates and user interaction ========= */
-  /* These variables extract the coordinates from the information contained in the provided
-  * link, such as subject id and section */
-
-  var urlParams = new URLSearchParams(window.location.search);
-
-  var subj_id = urlParams.get('id');
-  var subj_id_map = 'sbj_blind_' + subj_id;
-
-  var section = urlParams.get('section');
-  console.log(subj_id_map, 'section', section);
-
-  jsPsych.data.addProperties({
-    subj_id_mapping: subj_id_map,
-    section: section
-  });
-
-  /* =========== Stimuli audio paths ========= */
-
-  /* Mapping object, from the .csv stimuli sheet to a dynamical format */
-  var official_stimuli_mapping = [
-    {word: 'agenda', audio: 'agenda.mp3'},
-    {word: 'anello', audio: 'anello.mp3'},
-    {word: 'appuntamento', audio: 'appuntamento.mp3'},
-    {word: 'autorità', audio: 'autorità.mp3'},
-    {word: 'autostrada', audio: 'autostrada.mp3'},
-    {word: 'bersaglio', audio: 'bersaglio.mp3'},
-    {word: 'bidet', audio: 'bidet.mp3'},
-    {word: 'blu', audio: 'blu.mp3'},
-    {word: 'braccialetto', audio: 'braccialetto.mp3'},
-    {word: 'candela', audio: 'candela.mp3'},
-
-    {word: 'cassettiera', audio: 'cassettiera.mp3'},
-    {word: 'cavolo', audio: 'cavolo.mp3'},
-    {word: 'ciliegio', audio: 'ciliegio.mp3'},
-    {word: 'ciotola', audio: 'ciotola.mp3'},
-    {word: 'cipolla', audio: 'cipolla.mp3'},
-    {word: 'coccodrillo', audio: 'coccodrillo.mp3'},
-    {word: 'coperta', audio: 'coperta.mp3'},
-    {word: 'crostino', audio: 'crostino.mp3'},
-    {word: 'cucchiaio', audio: 'cucchiaio.mp3'},
-    {word: 'cuscino', audio: 'cuscino.mp3'},
-
-    {word: 'damigiana', audio: 'damigiana.mp3'},
-    {word: 'diario', audio: 'diario.mp3'},
-    {word: 'documento', audio: 'documento.mp3'},
-    {word: 'eccentrico', audio: 'eccentrico.mp3'},
-    {word: 'equilatero', audio: 'equilatero.mp3'},
-    {word: 'equilibrio', audio: 'equilibrio.mp3'},
-    {word: 'macchina', audio: 'macchina.mp3'},
-    {word: 'maglione', audio: 'maglione.mp3'},
-    {word: 'maestro', audio: 'maestro.mp3'},
-    {word: 'mare', audio: 'mare.mp3'},
-
-    {word: 'montagna', audio: 'montagna.mp3'},
-    {word: 'nonno', audio: 'nonno.mp3'},
-    {word: 'nipote', audio: 'nipote.mp3'},
-    {word: 'occhiali', audio: 'occhiali.mp3'},
-    {word: 'ombra', audio: 'ombra.mp3'},
-    {word: 'orizzonte', audio: 'orizzonte.mp3'},
-    {word: 'pennello', audio: 'pennello.mp3'},
-    {word: 'persona', audio: 'persona.mp3'},
-    {word: 'pecora', audio: 'pecora.mp3'},
-    {word: 'piazza', audio: 'piazza.mp3'},
-
-    {word: 'pineta', audio: 'pineta.mp3'},
-    {word: 'poltrona', audio: 'poltrona.mp3'},
-    {word: 'quadro', audio: 'quadro.mp3'},
-    {word: 'rotella', audio: 'rotella.mp3'},
-    {word: 'scuola', audio: 'scuola.mp3'},
-    {word: 'sedile', audio: 'sedile.mp3'},
-    {word: 'sorella', audio: 'sorella.mp3'},
-    {word: 'speranza', audio: 'speranza.mp3'},
-    {word: 'tazzina', audio: 'tazzina.mp3'},
-    {word: 'teatro', audio: 'teatro.mp3'},
-
-    {word: 'temporale', audio: 'temporale.mp3'},
-    {word: 'tetto', audio: 'tetto.mp3'},
-    {word: 'treno', audio: 'treno.mp3'},
-    {word: 'valigia', audio: 'valigia.mp3'},
-    {word: 'vasca', audio: 'vasca.mp3'},
-    {word: 'vecchia', audio: 'vecchia.mp3'},
-    {word: 'verde', audio: 'verde.mp3'},
-    {word: 'vita', audio: 'vita.mp3'},
-    {word: 'zaino', audio: 'zaino.mp3'},
-    {word: 'zanzara', audio: 'zanzara.mp3'},
-  ];
-
-  /* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
-
-  /* Participant ID textbox */
-  var sbjIDPrompt = {
-    type: jsPsychSurveyHtmlForm,
-    preamble: '<p>Per favore scrivi il tuo nome ' +
-            '(nella versione ufficiale questo corrisponderà al Prolific ID):</b></p>',
-    html: '<input name="ID" type="text" required/></p><p></p>',
-    button_label: "Continua",
-  };
-
-  /* Fullscreen and starting button */
-  var start_button = {
-    type: jsPsychFullscreen,
-    fullscreen_mode: true,
-    message: `<p>Benvenuti all'esperimento! Clicchi il bottone qua sotto per iniziare. Se non si desidera più partecipare, è possibile uscire chiudendo la pagina web in ogni momento.</p>`,
-    button_label: 'Inizia'
-  };
-
-  /* Instructions and examples */
-  var instructions_examples = {
-    /* [welcome_message_ita] Benvenuti all’esperimento. Grazie per la sua gentile partecipazione e disponibilità.
-    * L’esperimento durerà circa due ore e sarà diviso in quattro sezioni da mezz'ora.
-    * Per ogni sessione avrete una pausa nel mezzo.
-    *
-    * [instructions_ita] Verranno presentate serie di tre coppie di parole.
-    * Verrà chiesto per prima cosa di indicare quale coppia contiene le parole più simili tra di loro. Poi quale coppia contiene le parole più diverse.
-    * Risponda seguendo l'intuizione, senza riflettere troppo.
-    * I momenti in cui dovrà rispondere saranno segnalati da un suono. Risponda con i tasti del suo computer.
-    *
-    * [example1_ita] Ecco un esempio del procedimento:
-    * [examples_stimuli] rosso-giallo, albero-zebra, sedia-ragazzo.
-    * [example1_answer_best] Qua dovrà indicare quale delle tre coppie considera avere le parole più simili tra la prima, seconda o terza coppia.
-    * In questo caso risponderò con la prima coppia, rosso-giallo, premendo il tasto 1
-    * [example1_answer_worst] Subito dopo aver indicato la coppia più simile, dovrà indicare quale delle tre coppie considera avere le parole più diverse tra loro.
-    * In questo caso risponderò con la terza coppia, sedia-ragazzo, premendo il tasto tre.
-    *
-    * [example_2_ita] Ecco un altro esempio di risposta già svolto
-    * [examples_stimuli] giallo-corona, bambino-bambina, sigaretta-albero
-    * [example_2_answer_best] Coppia più simile: bambino-bambina. Premo 2.
-    * [example_2_answer_worst] Coppia più diversa: sigaretta-albero. Premo 3.
-    *
-    * [example_3_ita] Ora provi a rispondere, in modo da potersi allenare per l’esperimento effettivo:
-    * [examples_stimuli] marte-saturno, scatola-leone, borsa-giacca
-    * [example_3_instructions_best] Coppia più simile
-    * [example_3_instructions_worst] Coppia più diversa
-    *
-    * [example_4_ita] Ecco la seconda serie di prova.
-    * Risponda direttamente dopo aver sentito il suono: le istruzioni vocali sono state tolte come sarà nella versione ufficiale.
-    * [example_stimuli_four] tazza-bicchiere, insalata-armadio, libro-azienda
-    *
-    * [example_5_ita] Ultima sezione di prova:
-    * [example_stimuli_five] cavallo-palla, cialo-nuvola, foto-ricordo
-    * */
-    timeline: [
-      {
-        type: jsPsychAudioKeyboardResponse,
-        stimulus: "exp_b_instructions_examples_1.mp3",
-        choices: 'NO_KEYS',
-        trial_ends_after_audio: true,
-        post_trial_gap: 500
-      },
-      {
-        type: jsPsychAudioKeyboardResponse,
-        stimulus: "exp_instructions_examples_2.mp3",
-        choices: 'NO_KEYS',
-        trial_ends_after_audio: true,
-        post_trial_gap: 300
-      },
-      {
-        type: jsPsychAudioKeyboardResponse,
-        stimulus: "exp_instructions_examples_3.mp3",
-        choices: 'NO_KEYS',
-        trial_ends_after_audio: true,
-        post_trial_gap: 3000
-      },
-    ]
-  };
-
-  /* Welcome message for the different sections */
-  var welcome_message_2 = {
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_welcome_message_2.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 500
-  };
-
-  var welcome_message_3 = {
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_welcome_message_3.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 500
-  };
-
-  var welcome_message_4 = {
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_welcome_message_4.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 500
-  };
-
-  /* Understanding check: giving options to get back to instructions/examples */
-  var example_to_repeat = {
-    /* [example_2_ita] Ecco un altro esempio di risposta già svolto
-    * [examples_stimuli] giallo-corona, bambino-bambina, sigaretta-albero
-    * [example_2_answer_best] Coppia più simile: bambino-bambina. Premo 2.
-    * [example_2_answer_worst] Coppia più diversa: sigaretta-albero. Premo 3 */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_example_to_repeat.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000
-  };
-
-  var instructions_to_repeat = {
-    /* [instructions_ita] Verranno presentate serie di tre coppie di parole.
-    * Verrà chiesto per prima cosa di indicare quale coppia contiene le parole più simili tra di loro. Poi quale coppia contiene le parole più diverse.
-    * Risponda seguendo l'intuizione, senza riflettere troppo.
-    * I momenti in cui dovrà rispondere saranno segnalati da un suono. Risponda con i tasti del suo computer.
-    *
-    * [example_2_ita] Ecco un altro esempio di risposta già svolto
-    * [examples_stimuli] giallo-corona, bambino-bambina, sigaretta-albero
-    * [example_2_answer_best] Coppia più simile: bambino-bambina. Premo 2.
-    * [example_2_answer_worst] Coppia più diversa: sigaretta-albero. Premo 3 */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_instructions_to_repeat.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000
-  };
-
-  function understanding_check() {
-    var if_node_instructions = {
-      timeline: [instructions_to_repeat],
-      conditional_function: function() {
-        var data = jsPsych.data.get().last(1).values()[0];
-        return !!jsPsych.pluginAPI.compareKeys(data.response, 'i');
+    /* =========== Initialization ========= */
+    
+    var jsPsych = initJsPsych({
+      use_webaudio: false,
+      message_progress_bar: 'Barra di completamento',
+      show_progress_bar: true,
+      audio_to_preload: [
+        'agenda.mp3', 'anello.mp3', 'appuntamento.mp3', 'autorità.mp3', 'autostrada.mp3',
+        'bersaglio.mp3', 'bidet.mp3', 'blu.mp3', 'braccialetto.mp3', 'candela.mp3',
+        'caramella.mp3', 'cassettiera.mp3', 'cavolo.mp3', 'ciliegio.mp3', 'ciotola.mp3',
+        'cipolla.mp3', 'coccodrillo.mp3', 'coperta.mp3', 'crostino.mp3', 'cucchiaio.mp3',
+    
+        'cuscino.mp3', 'damigiana.mp3', 'diario.mp3', 'documento.mp3', 'eccentrico.mp3',
+        'equilatero.mp3', 'equilibrio.mp3', 'fiammifero.mp3', 'forchetta.mp3', 'gessetto.mp3',
+        'giallo.mp3', 'lanterna.mp3', 'lattuga.mp3', 'lavagna.mp3', 'leone.mp3',
+        'libreria.mp3', 'limone.mp3', 'mais.mp3', 'mappa.mp3', 'menta.mp3',
+    
+        'panchina.mp3', 'penna.mp3', 'piatto.mp3', 'pidocchio.mp3', 'pomodoro.mp3',
+        'portafoglio.mp3', 'posacenere.mp3', 'rana.mp3', 'rosa.mp3', 'satellite.mp3',
+        'sega.mp3', 'soglia.mp3', 'sole.mp3', 'spinaci.mp3', 'spremiagrumi.mp3',
+        'stuzzicadenti.mp3', 'succo.mp3', 'timone.mp3', 'verde.mp3', 'viola.mp3']
+    });
+    
+    var timeline = [];
+    
+    var database_path = "trials_dataframe_blind.csv";
+    
+    /* =========== Coordinates and user interaction ========= */
+    /* These variables extract the coordinates from the information contained in the provided
+    * link, such as subject id and section */
+    
+    var urlParams = new URLSearchParams(window.location.search);
+    
+    var subj_id = urlParams.get('id');
+    var subj_id_map = 'sbj_blind_' + subj_id;
+    
+    var section = urlParams.get('section');
+    console.log(subj_id_map, 'section', section);
+    
+    jsPsych.data.addProperties({
+      subj_id_mapping: subj_id_map,
+      section: section
+    });
+    
+    /* =========== Stimuli audio paths ========= */
+    
+    /* Mapping object, from the .csv stimuli sheet to a dynamical format */
+    var official_stimuli_mapping = [
+      {word: 'agenda', audio: 'agenda.mp3'},
+      {word: 'anello', audio: 'anello.mp3'},
+      {word: 'appuntamento', audio: 'appuntamento.mp3'},
+      {word: 'autorità', audio: 'autorità.mp3'},
+      {word: 'autostrada', audio: 'autostrada.mp3'},
+      
+      {word: 'bersaglio', audio: 'bersaglio.mp3'},
+      {word: 'bidet', audio: 'bidet.mp3'},
+      {word: 'blu', audio: 'blu.mp3'},
+      {word: 'braccialetto', audio: 'braccialetto.mp3'},
+      
+      {word: 'candela', audio: 'candela.mp3'},
+      {word: 'caramella', audio: 'caramella.mp3'},
+      {word: 'cassettiera', audio: 'cassettiera.mp3'},
+      {word: 'cavolo', audio: 'cavolo.mp3'},
+      {word: 'ciliegio', audio: 'ciliegio.mp3'},
+      {word: 'ciotola', audio: 'ciotola.mp3'},
+      {word: 'cipolla', audio: 'cipolla.mp3'},
+      {word: 'coccodrillo', audio: 'coccodrillo.mp3'},
+      {word: 'coperta', audio: 'coperta.mp3'},
+      {word: 'crostino', audio: 'crostino.mp3'},
+      {word: 'cucchiaio', audio: 'cucchiaio.mp3'},
+      {word: 'cuscino', audio: 'cuscino.mp3'},
+    
+      {word: 'damigiana', audio: 'damigiana.mp3'},
+      {word: 'diario', audio: 'diario.mp3'},
+      {word: 'documento', audio: 'documento.mp3'},
+      
+      {word: 'eccentrico', audio: 'eccentrico.mp3'},
+      {word: 'equilatero', audio: 'equilatero.mp3'},
+      {word: 'equilibrio', audio: 'equilibrio.mp3'},
+    
+      {word: 'fiammifero', audio: 'fiammifero.mp3'},
+      {word: 'forchetta', audio: 'forchetta.mp3'},
+      
+      {word: 'gessetto', audio: 'gessetto.mp3'},
+      {word: 'giallo', audio: 'giallo.mp3'},
+    
+      {word: 'lanterna', audio: 'lanterna.mp3'},
+      {word: 'lattuga', audio: 'lattuga.mp3'},
+      {word: 'lavagna', audio: 'lavagna.mp3'},
+      {word: 'leone', audio: 'leone.mp3'},
+      {word: 'libreria', audio: 'libreria.mp3'},
+      {word: 'limone', audio: 'limone.mp3'},
+    
+      {word: 'mais', audio: 'mais.mp3'},
+      {word: 'mappa', audio: 'mappa.mp3'},
+      {word: 'menta', audio: 'menta.mp3'},
+      
+      {word: 'panchina', audio: 'panchina.mp3'},
+      {word: 'penna', audio: 'penna.mp3'},
+      {word: 'piatto', audio: 'piatto.mp3'},
+      {word: 'pidocchio', audio: 'pidocchio.mp3'},
+      {word: 'pomodoro', audio: 'pomodoro.mp3'},
+      {word: 'portafoglio', audio: 'portafoglio.mp3'},
+      {word: 'posacenere', audio: 'posacenere.mp3'},
+      
+      {word: 'rana', audio: 'rana.mp3'},
+      {word: 'rosa', audio: 'rosa.mp3'},
+      
+      {word: 'satellite', audio: 'satellite.mp3'},
+      {word: 'sega', audio: 'sega.mp3'},
+      {word: 'soglia', audio: 'soglia.mp3'},
+      {word: 'sole', audio: 'sole.mp3'},
+      {word: 'spinaci', audio: 'spinaci.mp3'},
+      {word: 'spremiagrumi', audio: 'spremiagrumi.mp3'},
+      {word: 'stuzzicadenti', audio: 'stuzzicadenti.mp3'},
+      {word: 'succo', audio: 'succo.mp3'},
+    
+      {word: 'timone', audio: 'timone.mp3'},
+      
+      {word: 'verde', audio: 'verde.mp3'},
+      {word: 'viola', audio: 'viola.mp3'},
+    ];
+    
+    /* ==================== CONSENT FORM ==================== */
+    
+    /* Fullscreen and starting button */
+    var start_button = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true,
+      message: `<p>Benvenuti all'esperimento! Clicchi il bottone qua sotto per iniziare. Se non si desidera più partecipare, è possibile uscire chiudendo la pagina web in ogni momento.</p>`,
+      button_label: 'Inizia'
+    };
+    
+    var consent_form = {
+      timeline: [
+        {
+          /*
+          Benvenuti all’esperimento intitolato ’Esplorazione di mappe 
+          semantiche in popolazioni vedenti e non-vedenti’ sviluppato 
+          presso la Scuola Internazionale di Studi Avanzati a Trieste. 
+          Grazie per la vostra partecipazione!
+          
+          La ricercatrice principale è Emma Angela Montecchiari,
+          studentessa magistrale di Cognitive Science tra Sissa e 
+          Università di Trento. Lo studio è svolto con supervisione d
+          i Davide Crepaldi, professore nel dipartimento di Neuroscienze 
+          Cognitive della Sissa, e co-supervisione di Roberto Bottini, 
+          professore a Trento.
+          
+          Prima di decidere liberamente se vuole partecipare a 
+          questo studio, le chiediamo di ascoltare attentamente 
+          questo consenso informato e porgere ai ricercatori le 
+          domande che riterrà opportune al fine di essere pienamente
+          informato degli scopi, delle modalità di esecuzione
+          dell’esperimento e dei possibili inconvenienti connessi. 
+          La preghiamo di ricordare che questo è un progetto di ricerca e che la sua partecipazione è completamente volontaria. Lei si potrà ritirare in qualunque momento, senza necessariamente dover dare alcuna spiegazione. Può contattare i ricercatori per eventuali domande attraverso indirizzo mail.
+          
+          Lo scopo di questo studio è quello di indagare la rappresentazione
+          concettuale - in che modo pensiamo alle parole e al loro 
+          significato. Per fare questo, raccoglieremo un po’ di 
+          intuizioni sulla similarità tra i significati delle parole,
+          in persone vedenti e non vedenti, e studieremo la loro 
+          struttura.
+          
+          Durante questo esperimento le saranno richiesti dei giudizi 
+          rispetto ad alcune parole che le verranno fatte ascoltare. 
+          Le registrazioni non hanno alcuno scopo medico diagnostico. 
+          Prima dell'esperimento, potrete svolgere un allenamento sul 
+          tipo di compito che vi sarà assegnato.
+          
+          Sarà impegnato per un tempo pari a circa due ore. Non si
+          preoccupi troppo per la durata però. Ci saranno diverse
+          pause nel corso dell’esperimento, circa una ogni 15 minuti. 
+          E comunque abbiamo diviso l’esperimento in 4 blocchi di 
+          mezz’ora ciascuno, che potrà anche fare separatamente.
+          Ad esempio, in giorni diversi.
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_b_consent_1.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 100
+        },
+        {
+          /*
+          La partecipazione all’esperimento è volontaria.
+          La ricompensa monetaria corrisponde a 10 euro l’ora, 
+          per un ammontare di 20 euro per tutta la durata dell’esperimento.
+          
+          Tutti i dati raccolti grazie alla partecipazione Sua 
+          e di altre persone volontarie saranno custoditi nei 
+          server dell’Area di Neuroscienze della SISSA di Trieste, 
+          e non sarà consentito ad alcuna persona non autorizzata
+          di accedervi.
+          
+          Le sue informazioni personali saranno conservate 
+          separatamente dai risultati della presente ricerca, 
+          cui saranno associati soltanto attraverso un ID arbitrario. 
+          Grazie a questo processo di anonimizzazione dei dati, 
+          a nessun ricercatore sarà possibile analizzare i risultati
+          sapendo da quale specifico partecipante essi provengono. 
+          Inoltre, questa procedura renderà impossibile la Sua
+          identificazione anche nel momento in cui i risultati della 
+          ricerca fossero pubblicati su riviste scientifiche, o 
+          presentati a congressi o in qualsiasi altro pubblico 
+          consesso. Nel momento in cui questa ricerca dovesse 
+          portare alla pubblicazione di un articolo scientifico, 
+          i dati raccolti grazie alla sua partecipazione verranno 
+          pubblicati insieme all’articolo, ovviamente sempre in forma anonima.
+          
+          Più in generale, i dati raccolti saranno trattati in accordo
+          con le leggi sulla privacy e in conformità al Decreto
+          Legislativo 30 giugno 2003 n. 196 “Codice in materia di 
+          protezione dei dati personali” e al Regolamento Europeo 
+          2016/679 (General Data Protection Regulation - GDPR). 
+          Il Responsabile della protezione dei dati (RPD) è l’Avvocato
+          Valentina Carollo che può essere contattato attraverso il
+          seguente indirizzo email: dpo@sissa.it oppure rpd@sissa.it - 
+          PEC: protocollo@pec.sissa.it.
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_b_consent_2.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 100
+        },
+        ]
+    }
+    
+    var consensus_break = {
+      timeline: [
+        {
+          type: jsPsychAudioKeyboardResponse,
+          /* 
+          L'esperimento è stoppato.
+          Può farlo ripartire quando vuole premendo qualsiasi tasto sulla tastiera.
+          Non chiuda la pagina web nel frattempo. 
+          */
+          stimulus: "exp_b_short_break.mp3",
+          choices: 'ALL_KEYS',
+          response_ends_trial: true,
+          on_start: function () {
+            jsPsych.pauseExperiment();},
+          on_finish: function () {
+            jsPsych.resumeExperiment();}
+        },
+        {
+          type: jsPsychAudioKeyboardResponse,
+          /* 
+          Se ritiene di aver ricevuto sufficienti informazioni dagli sperimentatori, 
+          può dare il suo consenso premendo il tasto c. 
+          In tal modo darà inizio all'esperimento.
+          
+          Se invece non desidera esprimere il suo consenso, prema il tasto n. 
+          Può uscire dall'esperimento semplicemente chiudendo la pagina web. 
+          */
+          stimulus: "exp_b_consent_4.mp3",
+          choices: ['n', 'c'],
+          response_ends_trial: true,
+        },
+      ]
+    };
+    
+    function consensus() {
+      var if_node_consent = {
+        timeline: [instructions_examples],
+        conditional_function: function() {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'c');
+        }
       }
-    }
-    var if_node_example = {
-      timeline: [example_to_repeat],
-      conditional_function: function () {
-        var data = jsPsych.data.get().last(1).values()[0];
-        return !!jsPsych.pluginAPI.compareKeys(data.response, 'e');
+      var if_node_break = {
+        timeline: [consensus_break],
+        conditional_function: function () {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'b');
+        }
       }
+      var consensus_response = {
+          /*
+          Prima di esprimere il suo consenso alla partecipazione, le ricordiamo ancora che in caso lei abbia bisogno di delucidazioni su qualunque aspetto della procedura sperimentale, il ricercatore è a sua completa disposizione.
+          Le ricordiamo inoltre che ha il diritto di accedere alle informazioni che abbiamo raccolto su di lei, e ha anche il diritto di correggerli, cancellarli o presentare obiezione. Domande, commenti o richieste rispetto ai dati raccolti o rispetto ai suoi diritti possono essere rivolti a all’ufficio di protezione dati, Data Protection Officer (DPO), nella persona di Valentina Carollo, scrivendo a dpo@sissa.it. .
+    
+          Se intende prendere parte alla ricerca, le chiederemo ora di fornire il suo consenso. Esprimendo il suo consenso dichiara:
+          1) di avere almeno 18 anni
+          2) di aver compreso le spiegazioni relative a questo studio e all’intera
+          procedura sperimentale;
+          3) di essere stato informato riguardo alle finalità e agli obiettivi della ricerca in
+          questione;
+          4) di aver avuto la possibilità di porre domande a proposito di qualsiasi
+          aspetto della procedura sperimentale e di aver ottenuto risposte
+          soddisfacenti;
+          5) di aver ricevuto soddisfacenti assicurazioni sulla riservatezza delle
+          informazioni ottenute dall’esame della propria persona;
+          6) di essere consapevole di potersi ritirare in qualsiasi fase dello studio.
+    
+          Se volete domandare qualcosa agli sperimentatori, cliccate sul tasto B in modo da poter avere una pausa.
+          Per continuare e fornire il vostro consenso cliccate il tasto C.
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_b_consent_3.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 100
+        },
+      timeline.push(consensus_response, if_node_break, if_node_consent);
     }
-    var understanding_question = {
+    
+    /* ==================== INSTRUCTIONS AND EXAMPLES ==================== */
+    
+    /* Instructions and examples */
+    var instructions_examples = {
+      timeline: [
+        {
+          /* 
+          Benvenuti all’esperimento. Grazie per la sua gentile partecipazione e disponibilità.
+          L’esperimento durerà circa due ore e sarà diviso in quattro sezioni da mezz'ora.
+          Per ogni sessione avrete una pausa nel mezzo.
+          Verranno presentate serie di tre coppie di parole.
+          Verrà chiesto per prima cosa di indicare quale coppia contiene le parole più simili tra di loro. 
+          Poi quale coppia contiene le parole più diverse.
+          Risponda seguendo l'intuizione, senza riflettere troppo.
+          I momenti in cui dovrà rispondere saranno segnalati da un suono. Risponda con i tasti del suo computer.
+          Non sarà sempre immediato e semplice rispondere. Non preoccupatevi, seguite l'intuizione, senza riflettere troppo.
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_b_instructions_examples_1.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 500
+        },
+        {
+          /* 
+          Ecco un esempio del procedimento:
+          rosso-giallo, albero-zebra, sedia-ragazzo.
+          Qua dovrà indicare quale delle tre coppie considera avere le parole più simili tra la prima, seconda o terza coppia.
+          In questo caso risponderò con la prima coppia, rosso-giallo, premendo il tasto 1
+          Subito dopo aver indicato la coppia più simile, dovrà indicare quale delle tre coppie considera avere le parole più diverse tra loro.
+          In questo caso risponderò con la terza coppia, sedia-ragazzo, premendo il tasto tre.
+          
+          Ecco un altro esempio di risposta già svolto
+          giallo-corona, bambino-bambina, sigaretta-albero
+          Coppia più simile: bambino-bambina. Premo 2.
+          Coppia più diversa: sigaretta-albero. Premo 3.
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_instructions_examples_2.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 300
+        },
+        {
+          /* 
+          Ora provi a rispondere, in modo da potersi allenare per l’esperimento effettivo:
+          marte-saturno, scatola-leone, borsa-giacca
+          Coppia più simile
+          Coppia più diversa
+          
+          Ecco la seconda serie di prova.
+          Risponda direttamente dopo aver sentito il suono: le istruzioni vocali sono state tolte come sarà nella versione ufficiale.
+          tazza-bicchiere, insalata-armadio, libro-azienda
+          
+          Ultima sezione di prova:
+          cavallo-palla, cielo-nuvola, foto-ricordo
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_instructions_examples_3.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 3000
+        },
+      ]
+    };
+    
+    /* Welcome message for the different sections */
+    var welcome_message_2 = {
+      /* 
+      Bentornati all'esperimento e benvenuti alla seconda parte.
+      Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+      Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+      */
       type: jsPsychAudioKeyboardResponse,
-      /* Se volesse ascoltare di nuovo le istruzioni, prema sulla tastiera il tasto i.
-      Se volesse ascoltare di nuovo un esempio, prema sulla tastiera il tasto e.
-      Se le è tutto chiaro e vuole continuare, prema c sulla tastiera. */
-      stimulus: "exp_understanding_check.mp3",
-      choices: ['i', 'e', 'c'],
-      response_ends_trial: true,
-    }
-    timeline.push(understanding_question, if_node_instructions, if_node_example);
-  }
-
-  /* Clarifications check: giving break options to ask researchers */
-
-  /* Short break function. */
-  var short_break_message = {
-    type: jsPsychAudioKeyboardResponse,
-    /* L'esperimento è stoppato.
-    Può farlo ripartire quando vuole premendo qualsiasi tasto sulla tastiera.
-    Non chiuda la pagina web nel frattempo. */
-    stimulus: "exp_b_short_break.mp3",
-    choices: 'ALL_KEYS',
-    response_ends_trial: true,
-    on_start: function () {
-      jsPsych.pauseExperiment();},
-    on_finish: function () {
-      jsPsych.resumeExperiment();}
-  };
-
-  function researcher_clarifications () {
-    /* Short break, keeping the browser open. */
-    var short_break = {
-      timeline: [short_break_message],
-      conditional_function: function () {
-        var data = jsPsych.data.get().last(1).values()[0];
-        return !!jsPsych.pluginAPI.compareKeys(data.response, 'p');}
-    }
-    /* No break and beginning message */
-    var no_break = {
-      timeline: [beginning_message],
-      conditional: function () {
-        var data = jsPsych.data.get().last(1).values()[0];
-        return !!jsPsych.pluginAPI.compareKeys(data.response, 'c')}
-    }
-    /* Option asking if to do a break or to continue */
-    var clarification_question = {
+      stimulus: "exp_b_welcome_message_2.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 500
+    };
+    
+    var welcome_message_3 = {
+      /* 
+      Bentornati all'esperimento e benvenuti alla terza parte.
+      Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+      Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+      */
       type: jsPsychAudioKeyboardResponse,
-      /* Se ha necessità di chiedere chiarimenti ai ricercatori può decidere di stoppare l'esperimento.
-      Se necessita di una pausa, prema p. Se vuole continuare senza chiedere chiarimenti, prema c. */
-      stimulus: "exp_clarifications_check.mp3",
-      choices: ['p', 'c'],
-      response_ends_trial: true,
-    }
-    timeline.push(clarification_question, short_break, no_break)
-  };
-
-  /* General starting message. */
-  var beginning_message = {
-    timeline: [
-      {
-        /* Bene, sperando che sia tutto chiaro e augurandole un buon inizio di esperimento, cominciamo. */
+      stimulus: "exp_b_welcome_message_3.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 500
+    };
+    
+    var welcome_message_4 = {
+      /* 
+      Bentornati all'esperimento e benvenuti alla quarta e ultima parte.
+      Anche questa sessione durerà mezz'ora e ci sarà una pausa nel mezzo.
+      Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_welcome_message_4.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 500
+    };
+    
+    /* ======================= Understanding check: giving options to get back to instructions/examples */
+    var example_to_repeat = {
+      /*
+      Ecco un altro esempio di risposta già svolto
+      giallo-corona, bambino-bambina, sigaretta-albero
+      Coppia più simile: bambino-bambina. Premo 2.
+      Coppia più diversa: sigaretta-albero. Premo 3 
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_example_to_repeat.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000
+    };
+    
+    var instructions_to_repeat = {
+      /* 
+      Verranno presentate serie di tre coppie di parole.
+      Verrà chiesto per prima cosa di indicare quale coppia contiene le parole più simili tra di loro. 
+      Poi quale coppia contiene le parole più diverse.
+      Risponda seguendo l'intuizione, senza riflettere troppo.
+      I momenti in cui dovrà rispondere saranno segnalati da un suono. Risponda con i tasti del suo computer.
+      Non sarà sempre immediato e semplice rispondere. Non preoccupatevi, seguite l'intuizione, senza riflettere troppo.
+      
+      Ecco un altro esempio di risposta già svolto
+      giallo-corona, bambino-bambina, sigaretta-albero
+      Coppia più simile: bambino-bambina. Premo 2.
+      Coppia più diversa: sigaretta-albero. Premo 3.
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_instructions_to_repeat.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000
+    };
+    
+    function understanding_check() {
+      var if_node_instructions = {
+        timeline: [instructions_to_repeat],
+        conditional_function: function() {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'i');
+        }
+      }
+      var if_node_example = {
+        timeline: [example_to_repeat],
+        conditional_function: function () {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'e');
+        }
+      }
+      var understanding_question = {
         type: jsPsychAudioKeyboardResponse,
-        stimulus: "exp_beginning_message.mp3",
-        choices: 'NO_KEYS',
-        trial_ends_after_audio: true,
-        post_trial_gap: 1000
-      },
-    ]
-  };
-
-  /* Beginning message for the different sections */
-  var beginning_section_1 = {
-    /* Questa è la prima sessione, durera circa mezz'ora. */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_first_session.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 3000
-  };
-
-  var beginning_section_2 = {
-    /* Questa è la seconda sessione, durera circa mezz'ora. */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_second_session.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 3000
-  };
-
-  var beginning_section_3 = {
-    /* Questa è la terza sessione, durera circa mezz'ora. */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_third_session.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 3000
-  };
-
-  var beginning_section_4 = {
-    /* Questa è la quarta sessione, durera circa mezz'ora. */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_fourth_session.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 3000
-  };
-
-  /* ==================== CLOSING THE EXP ==================== */
-
-  /* Close the experiment */
-  var closing_message_1 = {
-    type: jsPsychAudioKeyboardResponse,
-    /* La prima sezione è terminata. Quando vuole, può iniziare la seconda sezione.
-    * Grazie ancora per aver partecipato e a presto! Per uscire, chiuda la pagina web. */
-    stimulus: "exp_b_closing_message_1.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000,
-  };
-
-  var closing_message_2 = {
-    type: jsPsychAudioKeyboardResponse,
-    /* La seconda sezione è terminata.
-    Quando vuole, può iniziare la terza sezione cliccando sul link fornito all'inizio.
-    Grazie ancora per aver partecipato e a presto!
-    Per uscire, può chiudere la pagina web. */
-    stimulus: "exp_b_closing_message_2.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000,
-  };
-
-  var closing_message_3 = {
-    type: jsPsychAudioKeyboardResponse,
-    /* La terza sezione è terminata.
-    Quando vuole, può iniziare la quarta sezione cliccando sul link fornito all'inizio.
-    Grazie ancora per aver partecipato e a presto!
-    Per uscire, può chiudere la pagina web. */
-    stimulus: "exp_b_closing_message_3.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000,
-  };
-
-  /* End the experiment */
-  var closing_message_4 = {
-    /* Anche l'ultima sezione è terminata.
-    Grazie mille ancora per aver partecipato al nostro esperimento!
-    Quando vuole, può uscire chiudendo la pagina web.
-    Arrivederci!*/
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_closing_message_4.mp3",
-    choices: 'NO_KEYS',
-    trial_ends_after_audio: true,
-    post_trial_gap: 1000,
-  };
-
-  var exit_fullscreen = {
-    type: jsPsychFullscreen,
-    fullscreen_mode: false,
-    delay_after: 0
-  };
-
-
-  /* ==================== STIMULI MANAGEMENT ==================== */
-
-  /* =========== Reading and parsing the stimuli csv dataset ========= */
-
-  function readTextFile(file, subjectID, timeline, callback) {
-    // Create a new XMLHttpRequest object
-    var rawFile = new XMLHttpRequest();
-    // Open the file asynchronously
-    rawFile.open("GET", file, true);
-    // Define a function to handle changes in the request state
-    rawFile.onreadystatechange = function () {
-      // Check if the request is completed and successful
-      if (rawFile.readyState === 4 && (rawFile.status === 200 || rawFile.status === 0)) {
-        // Retrieve the CSV data from the response
-        var csvData = rawFile.responseText;
-        var processedData = [];
-        // Parse the CSV data using PapaParse library
-        Papa.parse(csvData, {
-          header: true,
-          skipEmptyLines: true,
-          complete: function (results) {
-            console.log("Papa parsing complete");
-            // console.log("csvdata", csvData);
-            // Loop through each row in the parsed CSV data
-            results.data.forEach(row => {
-              // Check if the current row's participant ID matches the specified subject ID
-              const currentSubjectID = row["participant_id"];
-              if (currentSubjectID === subjectID) {
-                var stimuliChunk = [];
-                // Extract options values from the row
-                const options = [
-                  row["option1"], row["option2"], row["option3"]
-                ];
-                // console.log('options', options);
-                const flattenedOptions = options.flat();
-                // Loop through flattened options, processing them in chunks of three
-                for (let i = 0; i < flattenedOptions.length; i += 3) {
-                  if (i + 2 < flattenedOptions.length) {
-                    // Split each option pair and trim whitespace
-                    const pair1 = flattenedOptions[i].split(',').map(option => option.trim());
-                    const pair2 = flattenedOptions[i + 1].split(',').map(option => option.trim());
-                    const pair3 = flattenedOptions[i + 2].split(',').map(option => option.trim());
-                    // Check if all pairs have two elements
-                    if (pair1.length === 2 && pair2.length === 2 && pair3.length === 2) { // && pair4.length === 2) {
-                      // Add the pairs to the stimuli chunk
-                      stimuliChunk.push([
-                        [pair1[0], pair1[1]],
-                        [pair2[0], pair2[1]],
-                        [pair3[0], pair3[1]],
-                      ]);
-                    } else {
-                      console.error('Difficulty with pairs');
+        /* 
+        Se volesse ascoltare di nuovo le istruzioni, prema sulla tastiera il tasto i.
+        Se volesse ascoltare di nuovo un esempio, prema sulla tastiera il tasto e.
+        Se le è tutto chiaro e vuole continuare, prema c sulla tastiera. 
+        */
+        stimulus: "exp_understanding_check.mp3",
+        choices: ['i', 'e', 'c'],
+        response_ends_trial: true,
+      }
+      timeline.push(understanding_question, if_node_instructions, if_node_example);
+    }
+    
+    /* ======================== Clarifications check: giving break options to ask researchers */
+    /* Short break function. */
+    var short_break_message = {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      L'esperimento è stoppato.
+      Può farlo ripartire quando vuole premendo qualsiasi tasto sulla tastiera.
+      Non chiuda la pagina web nel frattempo. 
+      */
+      stimulus: "exp_b_short_break.mp3",
+      choices: 'ALL_KEYS',
+      response_ends_trial: true,
+      on_start: function () {
+        jsPsych.pauseExperiment();},
+      on_finish: function () {
+        jsPsych.resumeExperiment();}
+    };
+    
+    function researcher_clarifications () {
+      /* Short break, keeping the browser open. */
+      var short_break = {
+        timeline: [short_break_message],
+        conditional_function: function () {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'p');}
+      }
+      /* No break and beginning message */
+      var no_break = {
+        timeline: [beginning_message],
+        conditional: function () {
+          var data = jsPsych.data.get().last(1).values()[0];
+          return !!jsPsych.pluginAPI.compareKeys(data.response, 'c')}
+      }
+      /* Option asking if to do a break or to continue */
+      var clarification_question = {
+        type: jsPsychAudioKeyboardResponse,
+        /* 
+        Se ha necessità di chiedere chiarimenti ai ricercatori può decidere di stoppare l'esperimento.
+        Se necessita di una pausa, prema p. Se vuole continuare senza chiedere chiarimenti, prema c. 
+        */
+        stimulus: "exp_clarifications_check.mp3",
+        choices: ['p', 'c'],
+        response_ends_trial: true,
+      }
+      timeline.push(clarification_question, short_break, no_break)
+    };
+    
+    /* General starting message. */
+    var beginning_message = {
+      timeline: [
+        {
+          /* 
+          Bene, sperando che sia tutto chiaro e augurandole un buon inizio di esperimento, cominciamo. 
+          */
+          type: jsPsychAudioKeyboardResponse,
+          stimulus: "exp_beginning_message.mp3",
+          choices: 'NO_KEYS',
+          trial_ends_after_audio: true,
+          post_trial_gap: 1000
+        },
+      ]
+    };
+    
+    /* Beginning message for the different sections */
+    var beginning_section_1 = {
+      /* Questa è la prima sessione, durera circa mezz'ora. */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_first_session.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 3000
+    };
+    
+    var beginning_section_2 = {
+      /* Questa è la seconda sessione, durera circa mezz'ora. */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_second_session.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 3000
+    };
+    
+    var beginning_section_3 = {
+      /* Questa è la terza sessione, durera circa mezz'ora. */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_third_session.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 3000
+    };
+    
+    var beginning_section_4 = {
+      /* Questa è la quarta sessione, durera circa mezz'ora. */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_fourth_session.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 3000
+    };
+    
+    /* ==================== CLOSING THE EXP ==================== */
+    
+    /* Close the experiment */
+    var closing_message_1 = {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      La prima sezione è terminata. Quando vuole, può iniziare la seconda sezione cliccando sul link fornito all'inizio.
+      Grazie ancora per aver partecipato e a presto! 
+      Per uscire, può chiudere la pagina web. 
+      */
+      stimulus: "exp_b_closing_message_1.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000,
+    };
+    
+    var closing_message_2 = {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      La seconda sezione è terminata.
+      Quando vuole, può iniziare la terza sezione cliccando sul link fornito all'inizio.
+      Grazie ancora per aver partecipato e a presto!
+      Per uscire, può chiudere la pagina web. */
+      stimulus: "exp_b_closing_message_2.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000,
+    };
+    
+    var closing_message_3 = {
+      type: jsPsychAudioKeyboardResponse,
+      /* 
+      La terza sezione è terminata.
+      Quando vuole, può iniziare la quarta sezione cliccando sul link fornito all'inizio.
+      Grazie ancora per aver partecipato e a presto!
+      Per uscire, può chiudere la pagina web. 
+      */
+      stimulus: "exp_b_closing_message_3.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000,
+    };
+    
+    /* End the experiment */
+    var closing_message_4 = {
+      /* 
+      Anche l'ultima sezione è terminata.
+      Grazie mille ancora per aver partecipato al nostro esperimento!
+      Quando vuole, può uscire chiudendo la pagina web.
+      Arrivederci!
+      */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_closing_message_4.mp3",
+      choices: 'NO_KEYS',
+      trial_ends_after_audio: true,
+      post_trial_gap: 1000,
+    };
+    
+    var exit_fullscreen = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: false,
+      delay_after: 0
+    };
+    
+    /* ==================== STIMULI MANAGEMENT ==================== */
+    
+    /* =========== Reading and parsing the stimuli csv dataset ========= */
+    
+    function readTextFile(file, subjectID, timeline, callback) {
+      // Create a new XMLHttpRequest object
+      var rawFile = new XMLHttpRequest();
+      // Open the file asynchronously
+      rawFile.open("GET", file, true);
+      // Define a function to handle changes in the request state
+      rawFile.onreadystatechange = function () {
+        // Check if the request is completed and successful
+        if (rawFile.readyState === 4 && (rawFile.status === 200 || rawFile.status === 0)) {
+          // Retrieve the CSV data from the response
+          var csvData = rawFile.responseText;
+          var processedData = [];
+          // Parse the CSV data using PapaParse library
+          Papa.parse(csvData, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+              console.log("Papa parsing complete");
+              // console.log("csvdata", csvData);
+              // Loop through each row in the parsed CSV data
+              results.data.forEach(row => {
+                // Check if the current row's participant ID matches the specified subject ID
+                const currentSubjectID = row["participant_id"];
+                if (currentSubjectID === subjectID) {
+                  var stimuliChunk = [];
+                  // Extract options values from the row
+                  const options = [
+                    row["option1"], row["option2"], row["option3"]
+                  ];
+                  // console.log('options', options);
+                  const flattenedOptions = options.flat();
+                  // Loop through flattened options, processing them in chunks of three
+                  for (let i = 0; i < flattenedOptions.length; i += 3) {
+                    if (i + 2 < flattenedOptions.length) {
+                      // Split each option pair and trim whitespace
+                      const pair1 = flattenedOptions[i].split(',').map(option => option.trim());
+                      const pair2 = flattenedOptions[i + 1].split(',').map(option => option.trim());
+                      const pair3 = flattenedOptions[i + 2].split(',').map(option => option.trim());
+                      // Check if all pairs have two elements
+                      if (pair1.length === 2 && pair2.length === 2 && pair3.length === 2) { // && pair4.length === 2) {
+                        // Add the pairs to the stimuli chunk
+                        stimuliChunk.push([
+                          [pair1[0], pair1[1]],
+                          [pair2[0], pair2[1]],
+                          [pair3[0], pair3[1]],
+                        ]);
+                      } else {
+                        console.error('Difficulty with pairs');
+                      }
                     }
                   }
+                  // Check if the stimuli chunk contains enough pairs
+                  if (stimuliChunk[0].length === 3) {
+                    // Add the stimuli chunk to the processed data
+                    processedData.push(stimuliChunk[0]);
+                  } else {
+                    console.error('Not enough pairs for stimuliChunk');
+                  }
                 }
-                // Check if the stimuli chunk contains enough pairs
-                if (stimuliChunk[0].length === 3) {
-                  // Add the stimuli chunk to the processed data
-                  processedData.push(stimuliChunk[0]);
-                } else {
-                  console.error('Not enough pairs for stimuliChunk');
+              });
+              // Check if processed data is available
+              if (processedData.length > 0) {
+                console.log('Processed data ready');
+                // Call the callback function with the processed data
+                callback(processedData);
+                // Push timeline events based on section
+                if (section === '1') {
+                  timeline.push(closing_message_1)
+                } else if (section === '2') {
+                  timeline.push(closing_message_2);
+                } else if (section === '3') {
+                  timeline.push(closing_message_3)
+                } else if (section === '4') {
+                  timeline.push(closing_message_4)
                 }
+                timeline.push(exit_fullscreen);
+                jsPsych.run(timeline);
+              } else if (stimuliChunk.length > 0) {
+                console.error('Watch out: some stimuli remained outside');
+              } else {
+                console.error('No processed data or stimuliChunk');
+              }
+            }
+          });
+        }
+      }
+      // Send the XMLHttpRequest
+      rawFile.send(null);
+    }
+    
+    /* =========== Present stimuli and process responses ========= */
+    
+    /* Short break function. */
+    var break_experiment = {
+      /* Tempo di una pausa!
+      Si prenda cinque minuti se vuole.
+      Clicchi qualsiasi tasto sulla tastiera per riprendere.
+      Non chiuda la pagina web nel frattempo. */
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: "exp_b_break_experiment.mp3",
+      choices: 'ALL_KEYS',
+      response_ends_trial: true,
+      on_start: function () {
+        jsPsych.pauseExperiment();},
+      on_finish: function () {
+        jsPsych.resumeExperiment();}
+    };
+    
+    function presentAndProcessStimuli(processedData) {
+      // Define break interval and stimuli counter
+      // 120 trials (of 3 pairs) in total.
+      // Break after every 60 trials
+      var breakInterval = 60;
+      var stimuliCounter = 0;
+      // Loop through each stimuli chunk in the processed data
+      processedData.forEach((stimuliChunk, chunkIndex) => {
+        stimuliCounter++;
+        // Check the section and chunk index to determine stimuli presentation range
+        if (
+                (section === '1' && chunkIndex >= 0 && chunkIndex <= 118) ||
+                (section === '2' && chunkIndex >= 119 && chunkIndex <= 236) ||
+                (section === '3' && chunkIndex >= 237 && chunkIndex <= 354) ||
+                (section === '4' && chunkIndex >= 355 && chunkIndex <= 472)
+        ){
+          // Loop through each pair of stimuli in the chunk
+          stimuliChunk.forEach(pair => {
+            pair.forEach((word, index) => {
+              // Find mapping for the word in the stimuli
+              var mapping = official_stimuli_mapping.find(item => item.word === word);
+              if (mapping) {
+                // console.log("Stimulus:", mapping.audio, 'word', word, 'index', index); // Check if audio stimulus path is correct
+                // Define presentation parameters for the word stimulus
+                var word_presentation = {
+                  type: jsPsychAudioKeyboardResponse,
+                  stimulus: mapping.audio,
+                  choices: "NO_KEYS",
+                  trial_ends_after_audio: true,
+                  post_trial_gap: index === 0 ? 160 : 900, // Longer gap after second word
+                  on_finish: function (data) {
+                    if (data.audio_playback_error) {
+                      console.error("Audio playback error:", data.audio_playback_error);
+                    }
+                  },
+                };
+                // Add word presentation trial to timeline
+                timeline.push(word_presentation)
+                // console.log("Word presented:", word_presentation.stimulus);
+              } else {
+                console.error("Mapping not found for word:", word);
               }
             });
-            // Check if processed data is available
-            if (processedData.length > 0) {
-              console.log('Processed data ready');
-              // Call the callback function with the processed data
-              callback(processedData);
-              // Push timeline events based on section
-              if (section === '1') {
-                timeline.push(closing_message_1)
-              } else if (section === '2') {
-                timeline.push(closing_message_2);
-              } else if (section === '3') {
-                timeline.push(closing_message_3)
-              } else if (section === '4') {
-                timeline.push(closing_message_4)
-              }
-              timeline.push(exit_fullscreen);
-              jsPsych.run(timeline);
-            } else if (stimuliChunk.length > 0) {
-              console.error('Watch out: some stimuli remained outside');
-            } else {
-              console.error('No processed data or stimuliChunk');
-            }
-          }
-        });
-      }
-    }
-    // Send the XMLHttpRequest
-    rawFile.send(null);
-  }
-
-  /* =========== Present stimuli and process responses ========= */
-
-  /* Short break function. */
-  var break_experiment = {
-    /* Tempo di una pausa!
-    Si prenda cinque minuti se vuole.
-    Clicchi qualsiasi tasto sulla tastiera per riprendere.
-    Non chiuda la pagina web nel frattempo. */
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: "exp_b_break_experiment.mp3",
-    choices: 'ALL_KEYS',
-    response_ends_trial: true,
-    on_start: function () {
-      jsPsych.pauseExperiment();},
-    on_finish: function () {
-      jsPsych.resumeExperiment();}
-  };
-
-  function presentAndProcessStimuli(processedData) {
-    // Define break interval and stimuli counter
-    // 120 trials (of 3 pairs) in total.
-    // Break after every 60 trials
-    var breakInterval = 60;
-    var stimuliCounter = 0;
-    // Loop through each stimuli chunk in the processed data
-    processedData.forEach((stimuliChunk, chunkIndex) => {
-      stimuliCounter++;
-      // Check the section and chunk index to determine stimuli presentation range
-      if (
-              (section === '1' && chunkIndex >= 0 && chunkIndex <= 118) ||
-              (section === '2' && chunkIndex >= 119 && chunkIndex <= 236) ||
-              (section === '3' && chunkIndex >= 237 && chunkIndex <= 354) ||
-              (section === '4' && chunkIndex >= 355 && chunkIndex <= 472)
-      ){
-        // Loop through each pair of stimuli in the chunk
-        stimuliChunk.forEach(pair => {
-          pair.forEach((word, index) => {
-            // Find mapping for the word in the stimuli
-            var mapping = official_stimuli_mapping.find(item => item.word === word);
-            if (mapping) {
-              // console.log("Stimulus:", mapping.audio, 'word', word, 'index', index); // Check if audio stimulus path is correct
-              // Define presentation parameters for the word stimulus
-              var word_presentation = {
+          });
+    
+          // Define response trials after presenting stimuli pairs
+          var response = {
+            timeline: [
+              {
                 type: jsPsychAudioKeyboardResponse,
-                stimulus: mapping.audio,
-                choices: "NO_KEYS",
-                trial_ends_after_audio: true,
-                post_trial_gap: index === 0 ? 160 : 900, // Longer gap after second word
+                stimulus: 'separation_sound_F.mp3',
+                choices: ["1", "2", "3"],
+                trial_duration: 400,
+                response_ends_trial: true,
                 on_finish: function (data) {
                   if (data.audio_playback_error) {
                     console.error("Audio playback error:", data.audio_playback_error);
                   }
-                },
-              };
-              // Add word presentation trial to timeline
-              timeline.push(word_presentation)
-              // console.log("Word presented:", word_presentation.stimulus);
-            } else {
-              console.error("Mapping not found for word:", word);
-            }
-          });
-        });
-
-        // Define response trials after presenting stimuli pairs
-        var response = {
-          timeline: [
-            {
-              type: jsPsychAudioKeyboardResponse,
-              stimulus: 'separation_sound_F.mp3',
-              choices: ["1", "2", "3"],
-              trial_duration: 400,
-              response_ends_trial: true,
-              on_finish: function (data) {
-                if (data.audio_playback_error) {
-                  console.error("Audio playback error:", data.audio_playback_error);
                 }
-              }
-            },
-            {
-              type: jsPsychAudioKeyboardResponse,
-              stimulus: 'silence_audio.mp3',
-              choices: ["1", "2", "3"],
-              response_ends_trial: true,
-              post_trial_gap: 1000,
-              on_finish: function (data) {
-                if (data.audio_playback_error) {
-                  console.error("Audio playback error:", data.audio_playback_error);
+              },
+              {
+                type: jsPsychAudioKeyboardResponse,
+                stimulus: 'silence_audio.mp3',
+                choices: ["1", "2", "3"],
+                response_ends_trial: true,
+                post_trial_gap: 1000,
+                on_finish: function (data) {
+                  if (data.audio_playback_error) {
+                    console.error("Audio playback error:", data.audio_playback_error);
+                  }
                 }
-              }
-            },
-          ]
-        };
-        timeline.push(response); // Add response trials to timeline
-
-        // Check if it's time for a break
-        if (stimuliCounter % breakInterval === 0 && stimuliChunk !== 0) {
-          timeline.push(break_experiment);
+              },
+            ]
+          };
+          timeline.push(response); // Add response trials to timeline
+    
+          // Check if it's time for a break
+          if (stimuliCounter % breakInterval === 0 && stimuliChunk !== 0) {
+            timeline.push(break_experiment);
+          }
         }
-      }
-    })
-  }
-
-  /* ==================== TIMELINE ==================== */
-
-  // what to do with these? are they necessary?
-  timeline.push(sbjIDPrompt);
-  timeline.push(start_button);
-
-  // Specific timeline based on the assigned section
-  if (section === '1') {
-    timeline.push(instructions_examples);
-    understanding_check();
-    researcher_clarifications ();
-  } else if (section ==='2') {
-    timeline.push(welcome_message_2);
-    timeline.push(instructions_to_repeat);
-    understanding_check();
-    researcher_clarifications ();
-  } else if (section === '3') {
-    timeline.push(welcome_message_3);
-    timeline.push(instructions_to_repeat);
-    understanding_check();
-    timeline.push(beginning_message)
-  } else if (section === '4') {
-    timeline.push(welcome_message_4);
-    timeline.push(instructions_to_repeat);
-    timeline.push(beginning_message)
-  }
-
-  readTextFile(database_path, subj_id_map, timeline, function(processedData) {
-    presentAndProcessStimuli(processedData);
-    // console.log('PROCESSED_DATA', processedData)
-  });
-
-  console.log("Timeline:", timeline);
-
-  /* ==================== PRE-LOADING AND RUNNING ==================== */
-
-  jsPsych.run(timeline)
-
+      })
+    }
+    
+    /* ==================== TIMELINE ==================== */
+    
+    // what to do with these? are they necessary?
+    timeline.push(start_button);
+    
+    // Specific timeline based on the assigned section
+    if (section === '1') {
+      timeline.push(consent_form);
+      consensus();
+      timeline.push(instructions_examples);
+      understanding_check();
+      researcher_clarifications ();
+    } else if (section ==='2') {
+      timeline.push(welcome_message_2);
+      timeline.push(instructions_to_repeat);
+      understanding_check();
+      researcher_clarifications ();
+    } else if (section === '3') {
+      timeline.push(welcome_message_3);
+      timeline.push(instructions_to_repeat);
+      understanding_check();
+      timeline.push(beginning_message)
+    } else if (section === '4') {
+      timeline.push(welcome_message_4);
+      timeline.push(instructions_to_repeat);
+      timeline.push(beginning_message)
+    }
+    
+    readTextFile(database_path, subj_id_map, timeline, function(processedData) {
+      presentAndProcessStimuli(processedData);
+      // console.log('PROCESSED_DATA', processedData)
+    });
+    
+    console.log("Timeline:", timeline);
+    
+    /* ==================== PRE-LOADING AND RUNNING ==================== */
+    
+    jsPsych.run(timeline)
+    
 </script>
 </html>
