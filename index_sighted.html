@@ -1,42 +1,40 @@
 <!--
-Author: Emma Angela Montecchiari (emma.montecchiari@studenti.unitn.it)
+Project: An exploration of semantic maps in sighted and blind individuals
+Author: Emma Angela Montecchiari 
 
-This script runs the experiment version designed for sighted participants.
-It's lasting between 20 and 30 mins, depending on the participants speed.
+Experiment Version for Sighted Participants
+Duration: 20-30 minutes, depending on participant speed.
 
 Each participant is associated with 118 trials.
-With about 120 participants, we'll do a total of 14,160 trials.
-Each trial contains three pairs of word stimuli, extracted from
+With about 120 participants, we'll conduct a total of 14,160 trials.
+Each trial contains three pairs of word stimuli, extracted from:
 'input_data/stimuli_dataframe/trials_dataframe_sighted.csv'.
 
-Participants are redirected from Prolific, using URL parameters.
-The redirecting link will be like:
+Participants are redirected from Prolific using URL parameters:
 https://vlnra7y3lo.cognition.run?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
 
-cognition.run creates different condition for each participant (task run) .
-Assigning a different condition for each participant, the script discriminates
-the subj_id and therefore grabs the right stimuli for each participant.
-(https://docs.cognition.run/digging-deeper/inter-experiment-conditions#id-5.-testing-specific-conditions_
+cognition.run creates different conditions for each participant (task run).
+By assigning a different condition to each participant, the script identifies
+the subj_id and thus selects the correct stimuli for each participant.
+Documentation: https://docs.cognition.run/digging-deeper/inter-experiment-conditions#id-5.-testing-specific-conditions_
 
-Since, cognition.run free version doesn't provide the option for files bigger than 2MB,
-the instructions files are segmented in smaller ones.
+Due to the file size limitation (2MB) in the free version of cognition.run,
+instruction files are segmented into smaller parts.
 
-We use a mapping object to link words to audio files.
-Words come from the 'trials_dataframe_sighted.csv' file, and we stop at the end of each section
-for each participant trials distribution.
+A mapping object links words to audio files.
+Words are sourced from the 'trials_dataframe_sighted.csv' file, and we pause at the end of each section
+for each participant's trials distribution.
 
-Before presenting stimuli, participants get instructions, where
-there is an explanation of the experiment structure and task and some
-examples are provided.
-These are in Italian, as participants are Italian mother-tongue.
-The instructions transcripts are in the code comments
+Before presenting stimuli, participants receive instructions that explain the experiment structure and task, 
+along with some examples. These instructions are in Italian, as participants are native Italian speakers.
+The transcripts of these instructions are included in the code comments.
 
-The experiment runs on cognition.run, therefore the files path in the core re-direct to the plain file names (cognition.run structure)
-To run it locally, you'd need to change the file paths or put all the data files in one folder at the same level as the source index code.
-The instructions are in:
-    './input_data/audio_data/instructions/sighted_specific/*'
-    + './input_data/audio_data/instructions/common/*'
-The separation sounds and stimuli in:
+Since the experiment runs on cognition.run, file paths in the core are simplified to plain file names (cognition.run structure).
+To run the experiment locally, you'd need to change the file paths or place all the data files in one folder at the same level as the source index code.
+Instruction files:
+     './input_data/audio_data/instructions/sighted_specific/*'
+     './input_data/audio_data/instructions/common/*'
+Separation sounds and stimuli:
     './input_data/audio_data/sounds/*'
     './input_data/audio_data/stimuli/all/*'
 
@@ -114,6 +112,7 @@ var timeline = [];
 var database_path = "trials_dataframe_sighted.csv";
 
 /* =========== Coordinates and user interaction ========= */
+    
 /* These variables extract the coordinates from the information contained in the provided
 * link, such as subject id and section */
 
