@@ -630,7 +630,7 @@ function presentAndProcessStimuli(processedData) {
     // Add response trials to timeline
     timeline.push(response);
     // Check if it's time for a break
-    if (stimuliCounter % breakInterval === 0 && stimuliChunk !== 0) {
+    if (stimuliCounter - breakInterval === 0 && stimuliChunk !== 0) {
       timeline.push(break_experiment);
     }
   });
