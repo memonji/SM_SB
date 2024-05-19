@@ -81,7 +81,8 @@ Stimuli: https://speechgen.io/en/tts
 </head>
 <body></body>
 <script>
-/* ==================== INITIALIZATION ==================== */
+
+     /* ==================== INITIALIZATION ==================== */
 
 /* =========== Initialization ========= */
 
@@ -584,7 +585,7 @@ function presentAndProcessStimuli(processedData) {
             stimulus: mapping.audio,
             choices: "NO_KEYS",
             trial_ends_after_audio: true,
-            post_trial_gap: index === 0 ? 160 : 900, // Longer gap after second word
+            post_trial_gap: index === 0 ? 120 : 750, // Longer gap after second word
             on_finish: function (data) {
               if (data.audio_playback_error) {
                 console.error("Audio playback error:", data.audio_playback_error);}},
