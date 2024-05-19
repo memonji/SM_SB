@@ -92,7 +92,7 @@ The pre-built semantic spaces we use available at https://sites.google.com/site/
 [Available at https://sites.google.com/site/fritzgntr/software-resources/semantic_spaces (*baroni*)]
 
 - Image-based DSM: Developed by Günther et al. (2021). The pre-built semantic space we explored is available at ViSpa Semantic Spaces and the tool at ViSpa DSM Tool.
-[Semantic Space Available at https://sites.google.com/site/fritzgntr/software-resources/vispa] [Vispa Tool available at https://vectorswebtool.eu.pythonanywhere.com/#]
+[Semantic Space *[IMG_PRO space]* Available at https://sites.google.com/site/fritzgntr/software-resources/vispa] [Vispa Tool available at https://vectorswebtool.eu.pythonanywhere.com/#]
 
 **Stimuli distribution and data analysis**
 
