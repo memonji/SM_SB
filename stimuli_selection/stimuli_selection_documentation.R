@@ -1,3 +1,6 @@
+# Author: Emma Angela Montecchiari
+# Project: An exploration of semantic maps in sighted and blind individuals 
+
 # This document has been built in order to give a documentation of the procedure used for selecting stimuli:
 
 ###################################################################################################################
@@ -6,7 +9,7 @@
 
 ###################################################################################################################
 
-#   (B) stimuli have been selected through 'scripts/sm0-modelExploration_3/scripts/main_selection_functions.R' 
+#   (B) Stimuli have been selected through 'scripts/sm0-modelExploration_3/scripts/main_selection_functions.R' 
 #       and a documented csv file 'files/SM_SB_selected_words.csv' has been created.
 #       It contains the 60 words selected as stimuli with the relevant information in respect to the Word2Vec and Vispa models.
 #       Since our experiment is working on a 3 pairs comparison, a multiple of 3 has been selected as the ideal number of words
@@ -14,8 +17,9 @@
 
 ###################################################################################################################
 
-#   (C) The file 'files/SM_SB_stimuli_single_words.txt' has been created with the words 'Translation' column from the above csv sheet.
-#       It contains the 60 words stimuli and it's a simple txt file with a word for each line.
+#   (C) The file 'files/SM_SB_stimuli_single_words.txt' has been created with the words in 'Translation' column from 
+#       the 'files/SM_SB_selected_words.csv' sheet.
+#       It's a .txt file with a word for each line, containing all the 60 stimuli words.
 
 ###################################################################################################################
 
@@ -37,8 +41,8 @@
 # { Having words_number <- 60, 1770 pairs and 3540 words (create_pairs.py script). Applying the best worst scaling metric, Hollis software create_trials.py script The total number of trials (3 pairs, 6 words) created are 14160 }
 
 #       A file with 6 columns with 1 word in each has been created. Those corresponds to the words we should present in every trial.
-#       This is he raw version of the stimuli which should be divided in pairs and tidy up.
-#       In order to do this: 
+#       This is the raw version of the stimuli, which must be divided into pairs and rearranged.
+#       This section of the script is taking this task into account: 
 
 rm(list=ls());
 renv::restore();
@@ -152,51 +156,5 @@ write.csv(final_data_blind, "./files/trials_dataframe_blind.csv", row.names = FA
 rm(list=ls());
 renv::restore();
 
-#   (H) "./files/trials_dataframe_sighted.csv" and "./files/trials_dataframe_blind.csv" are copied in 'audio_data/stimuli_dataframe/'
-#   in order to make the retrieval for the dynamical cose easier
-
-###################################################################################################################
-
-rm(list=ls());
-renv::restore();
-
-# Additional: Money we would need
-# £8/hour
-# Pounds -> Euros conversion 1 GBP = 1.16693 EUR
-
-# -----------------------------------------------
-
-# Prolific fees for academia is 25% of taxes https://researcher-help.prolific.com/hc/en-gb/articles/360009223533-What-is-your-pricing 
-# Pounds to Euros: pounds amount*1.16876 https://www.xe.com/it/currencyconverter/convert/?Amount=480&From=GBP&To=EUR
-# Fees calculator: https://www.prolific.com/calculator
-
-# -------------- SIGHTED -------------------------
-
-# --------- Expected time for the task
-
-# .5 hour * 8pounds * 120 participants
-# £480.00 + £160.00 = £640
-# 746.8352euros -> 750 euros
-
-# --------- Loose timing 
-
-# Let's consider 40 mins (time that they might need)
-# .67 hours * 8pounds * 120 participants
-# £640 + £214 = £854  # https://www.prolific.com/calculator
-# £853 -> 997euros -> 1000euros
-
-
-# -------------- BLIND -------------------------
-# - We might also go for the 8euros/hour option, to simply things
-
-# --------- Expected time for the task
-
-# 2 hours * 8 pounds * 30 participants
-# £480.00
-# £560.1264 -> 565euros
-
-# --------- Loose timing 
-
-# Let's consider 130 mins, to be sure
-# 2.166667 * 8pounds * 30 participants
-# £520 -> 607euros -> 610euros
+#   (H) "./files/trials_dataframe_sighted.csv" and "./files/trials_dataframe_blind.csv" are copied in 'SM_SB/input_data/trials_dataframe/'
+#   in order to make the retrieval for the dynamical scripts easier.
