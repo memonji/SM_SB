@@ -77,8 +77,8 @@ Stimuli: https://speechgen.io/en/tts
 </head>
 <body></body>
 <script>
-
-    /* ==================== INITIALIZATION ==================== */
+    
+/* ==================== INITIALIZATION ==================== */
 
 /* =========== Initialization ========= */
 
@@ -382,7 +382,7 @@ function consensus() {
       type: jsPsychAudioKeyboardResponse,
       stimulus: "exp_b_consent_3.mp3",
       choices: ['c', 'b'],
-      trial_ends_after_audio: true,
+      response_ends_trial: true,
       post_trial_gap: 100
     }
     timeline.push(consensus_response, if_node_break, if_node_consent)
@@ -489,6 +489,19 @@ var welcome_message_4 = {
   */
   type: jsPsychAudioKeyboardResponse,
   stimulus: "exp_b_welcome_message_4.mp3",
+  choices: 'NO_KEYS',
+  trial_ends_after_audio: true,
+  post_trial_gap: 500
+};
+
+var welcome_message_6 = {
+  /* 
+  Bentornati all'esperimento e benvenuti alla seconda parte.
+  Anche questa sessione durerà un'ora e ci sarà qualche pausa nel mezzo.
+  Per comodità, ecco presentate di nuovo le istruzioni più in breve.
+  */
+  type: jsPsychAudioKeyboardResponse,
+  stimulus: "exp_b_welcome_message_6.mp3",
   choices: 'NO_KEYS',
   trial_ends_after_audio: true,
   post_trial_gap: 500
@@ -801,9 +814,14 @@ function readTextFile(file, subjectID, timeline, callback) {
               timeline.push(closing_message_3)
             } else if (section === '4') {
               timeline.push(closing_message_4)
+            } else if (section === '5' ) {
+              timeline.push(closing_message_2);
+            } else if (section === '6') {
+              timeline.push(closing_message_4)
             }
             timeline.push(exit_fullscreen);
             jsPsych.run(timeline);
+            
           } else if (stimuliChunk.length > 0) {
             console.error('Watch out: some stimuli remained outside');
           } else {
@@ -843,13 +861,14 @@ function presentAndProcessStimuli(processedData) {
   var stimuliCounter = 0;
   // Loop through each stimuli chunk in the processed data
   processedData.forEach((stimuliChunk, chunkIndex) => {
-    stimuliCounter++;
     // Check the section and chunk index to determine stimuli presentation range
     if (
             (section === '1' && chunkIndex >= 0 && chunkIndex <= 118) ||
             (section === '2' && chunkIndex >= 119 && chunkIndex <= 236) ||
             (section === '3' && chunkIndex >= 237 && chunkIndex <= 354) ||
-            (section === '4' && chunkIndex >= 355 && chunkIndex <= 472)
+            (section === '4' && chunkIndex >= 355 && chunkIndex <= 472) ||
+            (section === '5' && chunkIndex >= 0 && chunkIndex <= 236) ||
+            (section === '6' && chunkIndex >= 237 && chunkIndex <= 472) 
     ){
       // Loop through each pair of stimuli in the chunk
       stimuliChunk.forEach(pair => {
@@ -909,9 +928,10 @@ function presentAndProcessStimuli(processedData) {
         ]
       };
       timeline.push(response); // Add response trials to timeline
-
+      
+      stimuliCounter++;
       // Check if it's time for a break
-      if (stimuliCounter - breakInterval === 0 && stimuliChunk !== 0) {
+      if (stimuliCounter === 60 || stimuliCounter === 120 || stimuliCounter === 180) {
         timeline.push(break_experiment);
       }
     }
@@ -925,16 +945,15 @@ timeline.push(start_button);
 
 // Specific timeline based on the assigned section
 if (section === '1') {
-  // timeline.push(consent_form);
-  // consensus();
-  // timeline.push(instructions_examples);
-  // understanding_check();
-  // researcher_clarifications ();
+  timeline.push(consent_form);
+  consensus();
+  understanding_check();
+  researcher_clarifications ();
 } else if (section ==='2') {
-  // timeline.push(welcome_message_2);
-  // timeline.push(instructions_to_repeat);
-  // understanding_check();
-  // researcher_clarifications ();
+  timeline.push(welcome_message_2);
+  timeline.push(instructions_to_repeat);
+  understanding_check();
+  researcher_clarifications ();
 } else if (section === '3') {
   timeline.push(welcome_message_3);
   timeline.push(instructions_to_repeat);
@@ -944,6 +963,16 @@ if (section === '1') {
   timeline.push(welcome_message_4);
   timeline.push(instructions_to_repeat);
   timeline.push(beginning_message)
+} else if (section === '5') {
+  timeline.push(consent_form);
+  consensus();
+  understanding_check();
+  researcher_clarifications();
+} else if (section === '6') {
+  timeline.push(welcome_message_6);
+  timeline.push(instructions_to_repeat);
+  understanding_check();
+  researcher_clarifications();
 }
 
 readTextFile(database_path, subj_id_map, timeline, function(processedData) {
